@@ -1,6 +1,5 @@
 import { produce } from "immer";
 import type { DataviewApi, Link } from "obsidian-dataview";
-import type { TableResult } from "obsidian-dataview/lib/api/plugin-api";
 import {
   emptyDataFrame,
   type DataField,
@@ -48,44 +47,49 @@ export class DataviewDataSource extends DataSource {
       return emptyDataFrame;
     }
 
-    const result = await this.api.query(
-      this.project.dataSource.config.query ?? "",
-      undefined,
-      {
-        forceId: true,
+    try {
+      const query = this.project.dataSource.config.query ?? "";
+      
+      // Use the modern dv.query API with proper error handling
+      const result = await this.api.query(query);
+
+      if (!result?.successful) {
+        throw new Error(`Dataview query failed: ${result?.error || 'Unknown error'}`);
       }
-    );
 
-    if (!result?.successful || result.value.type !== "table") {
-      throw new Error("dataview query failed");
-    }
+      if (result.value.type !== "table") {
+        throw new Error(`Expected table result, got ${result.value.type}`);
+      }
 
-    const rows = parseTableResult(result.value);
+      const rows = this.parseTableResult(result.value);
+      const standardizedRecords = this.standardizeRecords(rows);
 
-    const standardizedRecords = this.standardizeRecords(rows);
-
-    let fields = this.sortFields(
-      detectSchema(standardizedRecords),
-      result.value.headers
-    );
-
-    for (const f in this.project.fieldConfig) {
-      fields = fields.map<DataField>((field) =>
-        field.name !== f
-          ? field
-          : {
-              ...field,
-              typeConfig: {
-                ...this.project.fieldConfig?.[f],
-                ...field.typeConfig,
-              },
-            }
+      let fields = this.sortFields(
+        detectSchema(standardizedRecords),
+        result.value.headers
       );
+
+      // Apply field configuration from project settings
+      for (const f in this.project.fieldConfig) {
+        fields = fields.map<DataField>((field) =>
+          field.name !== f
+            ? field
+            : {
+                ...field,
+                typeConfig: {
+                  ...this.project.fieldConfig?.[f],
+                  ...field.typeConfig,
+                },
+              }
+        );
+      }
+
+      const records = parseRecords(standardizedRecords, fields);
+
+      return { fields, records };
+    } catch (error) {
+      throw new Error(`Dataview query execution failed: ${error instanceof Error ? error.message : String(error)}`);
     }
-
-    const records = parseRecords(standardizedRecords, fields);
-
-    return { fields, records };
   }
 
   sortFields(fields: DataField[], headers: string[]): DataField[] {
@@ -126,23 +130,22 @@ export class DataviewDataSource extends DataSource {
 
     return records;
   }
-}
 
-function parseTableResult(value: TableResult): Array<Record<string, any>> {
-  const headers: string[] = value.headers;
+  private parseTableResult(value: any): Array<Record<string, any>> {
+    const headers: string[] = value.headers;
+    const rows: Array<Record<string, any>> = [];
 
-  const rows: Array<Record<string, any>> = [];
+    value.values.forEach((row: any[]) => {
+      const values: Record<string, any> = {};
 
-  value.values.forEach((row) => {
-    const values: Record<string, any> = {};
+      headers.forEach((header, index) => {
+        const value = row[index];
+        values[header] = value;
+      });
 
-    headers.forEach((header, index) => {
-      const value = row[index];
-      values[header] = value;
+      rows.push(values);
     });
 
-    rows.push(values);
-  });
-
-  return rows;
+    return rows;
+  }
 }

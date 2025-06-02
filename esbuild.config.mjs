@@ -13,7 +13,7 @@ if you want to view the source, please visit the github repository of this plugi
 
 const prod = process.argv[2] === "production";
 
-esbuild
+const build = esbuild
   .build({
     plugins: [
       esbuildSvelte({
@@ -61,12 +61,18 @@ esbuild
       ...builtins,
     ],
     format: "cjs",
-    watch: !prod,
     target: "es2016",
     logLevel: "info",
     sourcemap: prod ? false : "inline",
     treeShaking: true,
     minify: prod,
     outfile: "main.js",
-  })
-  .catch(() => process.exit(1));
+  });
+
+if (!prod) {
+  build.then((result) => {
+    console.log("Build completed");
+  });
+} else {
+  build.catch(() => process.exit(1));
+}

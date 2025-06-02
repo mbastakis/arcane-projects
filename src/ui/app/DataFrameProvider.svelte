@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { getAPI, isPluginEnabled, type DataviewApi } from "obsidian-dataview";
+  import type { DataviewApi } from "obsidian-dataview";
+  import { isDataviewPluginEnabled as isPluginEnabled } from "src/lib/stores/capabilities";
   import { Callout, Loading, Typography } from "obsidian-svelte";
   import type { DataSource } from "../../lib/datasources";
   import { FolderDataSource } from "src/lib/datasources/folder/datasource";
@@ -59,7 +60,8 @@
 
   function getDataviewAPI(): DataviewApi | undefined {
     if (isPluginEnabled($app)) {
-      return getAPI($app);
+      const dataviewPlugin = $app?.plugins?.plugins?.['dataview'] as any;
+      return dataviewPlugin?.api;
     } else {
       throw new UnsupportedCapability(
         get(i18n).t("errors.missingDataview.message")
