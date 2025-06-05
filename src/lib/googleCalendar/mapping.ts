@@ -5,6 +5,54 @@ import type { GoogleCalendarEvent, GoogleCalendarFrontmatter, CalendarEventMappi
 import { isValidDateString } from './types';
 
 /**
+ * Checks if a DataRecord represents a Google Calendar event
+ */
+export function isGoogleCalendarEvent(record: DataRecord): boolean {
+  const values = record.values;
+  
+  // Check for Google Calendar specific fields
+  const hasGoogleCalendarId = values['google-calendar-id'] !== undefined;
+  const hasGoogleEventId = values['google-event-id'] !== undefined;
+  const hasGoogleCalendarSync = values['google-calendar-sync'] === true;
+  
+  // Also check for calendar-related date fields that indicate it's a calendar event
+  const hasCalendarDateFields = values['start-date'] !== undefined || 
+                                 values['end-date'] !== undefined ||
+                                 values['due-date'] !== undefined;
+  
+  // Check if it has calendar event tags
+  const tags = values['tags'];
+  const hasCalendarTags = Array.isArray(tags) && tags.includes('calendar-event');
+  
+  return hasGoogleCalendarId || hasGoogleEventId || hasGoogleCalendarSync || 
+         (hasCalendarDateFields && hasCalendarTags);
+}
+
+/**
+ * Returns the list of Google Calendar specific field names that should be hidden 
+ * for non-calendar events
+ */
+export function getGoogleCalendarFieldNames(): string[] {
+  return [
+    'google-calendar-id',
+    'google-event-id',
+    'google-calendar-sync',
+    'google-calendar-last-sync',
+    'google-recurrence',
+    'google-recurring-event-id',
+    'google-is-recurring',
+    'start-date',
+    'end-date',
+    'start-time',
+    'end-time',
+    // Don't hide these as they might be used for non-calendar notes
+    // 'due-date',
+    // 'description',
+    // 'tags'
+  ];
+}
+
+/**
  * Safely parses a date string with validation
  */
 function safeDateParse(dateStr: string | undefined, fieldName: string): dayjs.Dayjs {
@@ -46,10 +94,6 @@ export function mapGoogleEventToFrontmatter(event: GoogleCalendarEvent): GoogleC
 
   if (event.description) {
     frontmatter.description = event.description;
-  }
-
-  if (event.location) {
-    frontmatter.location = event.location;
   }
 
   // Always store recurrence information if present (this is the master recurring event)
@@ -100,11 +144,6 @@ export function mapRecordToGoogleEvent(record: DataRecord): Partial<GoogleCalend
   // Add description if available
   if (values['description']) {
     event.description = values['description'] as string;
-  }
-
-  // Add location if available
-  if (values['location']) {
-    event.location = values['location'] as string;
   }
 
   // Determine event timing

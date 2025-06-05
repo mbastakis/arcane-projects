@@ -24,7 +24,8 @@
   import GalleryOptionsProvider from "./GalleryOptionsProvider.svelte";
   import { getCoverRealPath } from "./gallery";
   import { settings } from "src/lib/stores/settings";
-  import { handleHoverLink } from "../helpers";
+  import { handleHoverLink, menuOnContextMenu } from "../helpers";
+  import { Menu } from "obsidian";
 
   export let project: ProjectDefinition;
   export let frame: DataFrame;
@@ -53,6 +54,40 @@
   function saveConfig(cfg: GalleryConfig) {
     config = cfg;
     onConfigChange(cfg);
+  }
+
+  function handleRecordContextMenu(record: DataRecord) {
+    return (event: any) => {
+      event.preventDefault();
+      event.stopPropagation();
+      menuOnContextMenu(event, handleRecordMenu(record));
+    };
+  }
+
+  function handleRecordMenu(record: DataRecord) {
+    const menu = new Menu();
+
+    menu.addItem((item) => {
+      item
+        .setTitle($i18n.t("modals.note.edit.title"))
+        .setIcon("edit")
+        .onClick(() => {
+          handleRecordClick(record);
+        });
+    });
+
+    menu.addSeparator();
+
+    menu.addItem((item) => {
+      item
+        .setTitle("Open in new tab")
+        .setIcon("external-link")
+        .onClick(() => {
+          $app.workspace.openLinkText(record.id, "", true);
+        });
+    });
+
+    return menu;
   }
 </script>
 
@@ -85,6 +120,7 @@
                 $app.workspace.openLinkText(record.id, "", true);
               }
             }}
+            on:contextmenu={handleRecordContextMenu(record)}
           >
             {@const coverPath = getCoverRealPath($app, record, coverField)}
 
@@ -118,6 +154,7 @@
                 on:hover={({ detail: { event, sourcePath } }) => {
                   handleHoverLink(event, sourcePath);
                 }}
+                on:contextmenu={handleRecordContextMenu(record)}
               >
                 {getDisplayName(record.id)}
               </InternalLink>

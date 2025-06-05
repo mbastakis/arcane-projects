@@ -15,7 +15,6 @@ export interface GoogleCalendarEvent {
   status?: string;
   created?: string;
   updated?: string;
-  location?: string;
   htmlLink?: string;
   recurrence?: string[];
   recurringEventId?: string;
@@ -75,7 +74,6 @@ export interface GoogleCalendarFrontmatter {
   'start-time'?: string;  // HH:mm format for easier editing
   'end-time'?: string;    // HH:mm format for easier editing
   description?: string;
-  location?: string;
   tags?: string[];
   // Recurrence information
   'google-recurrence'?: string[];

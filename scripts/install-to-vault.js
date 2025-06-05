@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 
 const fs = require("fs");
 const path = require("path");
@@ -38,17 +39,19 @@ async function main() {
 
     // Prompt for vault path
     const vaultPath = await question(
-      "Enter the path to your Obsidian vault: (/Users/A200407315/Documents/NotesOfTheGods)"
+      `Enter the path to your Obsidian vault: (${process.env.OBSIDIAN_VAULT_PATH})`
     );
+    // Use environment variable if provided
+    const envVaultPath = process.env.OBSIDIAN_VAULT_PATH || "";
+    // Fallback to environment variable if input is empty
+    const finalVaultPath = vaultPath.trim() || envVaultPath.trim();
 
-    if (!vaultPath.trim()) {
-      console.info("❌ Vault path cannot be empty");
-      console.info("Using default vault path: /Users/A200407315/Documents/NotesOfTheGods");
-      vaultPath = "/Users/A200407315/Documents/NotesOfTheGods";
-      // process.exit(1);
+    if (!finalVaultPath) {
+      console.error("❌ Vault path cannot be empty");
+      process.exit(1);
     }
 
-    const expandedVaultPath = vaultPath.replace(/^~/, require("os").homedir());
+    const expandedVaultPath = finalVaultPath.replace(/^~/, require("os").homedir());
 
     // Validate vault path exists
     if (!fs.existsSync(expandedVaultPath)) {

@@ -16,7 +16,10 @@
     getRecordColorContext,
     handleHoverLink,
     sortRecordsContext,
+    menuOnContextMenu,
   } from "src/ui/views/helpers";
+  import { Menu } from "obsidian";
+  import { i18n } from "src/lib/stores/i18n";
   import {
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     TRIGGERS,
@@ -66,6 +69,32 @@
 
   const isPlaceholder = (item: DataRecord) =>
     !!(item as any)[SHADOW_ITEM_MARKER_PROPERTY_NAME];
+
+  function handleRecordMenu(record: DataRecord) {
+    const menu = new Menu();
+
+    menu.addItem((item) => {
+      item
+        .setTitle($i18n.t("modals.note.edit.title"))
+        .setIcon("edit")
+        .onClick(() => {
+          onRecordClick(record);
+        });
+    });
+
+    menu.addSeparator();
+
+    menu.addItem((item) => {
+      item
+        .setTitle("Open in new tab")
+        .setIcon("external-link")
+        .onClick(() => {
+          $app.workspace.openLinkText(record.id, "", true);
+        });
+    });
+
+    return menu;
+  }
 </script>
 
 <div
@@ -94,6 +123,9 @@
       class:projects--board--card-placeholder={isPlaceholder(item)}
       on:keypress
       on:click={() => onRecordClick(item)}
+      on:contextmenu={(event) => {
+        menuOnContextMenu(event, handleRecordMenu(item));
+      }}
       animate:flip={{ duration: flipDurationMs }}
     >
       <ColorItem {color}>

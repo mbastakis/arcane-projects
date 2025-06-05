@@ -72,6 +72,7 @@
     "inflight": "^1.0.6"
   },
   "dependencies": {
+    "dotenv": "^16.5.0",
     "googleapis": "^149.0.0"
   }
 }

@@ -13,11 +13,24 @@
   import { FieldControl } from "src/ui/components/FieldControl";
   import type { DataField, DataRecord } from "src/lib/dataframe/dataframe";
   import { i18n } from "src/lib/stores/i18n";
+  import { isGoogleCalendarEvent, getGoogleCalendarFieldNames } from "src/lib/googleCalendar/mapping";
 
   export let fields: DataField[];
   export let record: DataRecord;
 
-  $: editableFields = fields.filter((field) => !field.derived);
+  // Filter out Google Calendar fields for non-calendar events
+  $: isCalendarEvent = isGoogleCalendarEvent(record);
+  $: googleCalendarFieldNames = getGoogleCalendarFieldNames();
+  
+  $: filteredFields = fields.filter((field) => {
+    // Always show the field if it's a calendar event
+    if (isCalendarEvent) return true;
+    
+    // Hide Google Calendar specific fields for non-calendar events
+    return !googleCalendarFieldNames.includes(field.name);
+  });
+
+  $: editableFields = filteredFields.filter((field) => !field.derived);
 
   export let onSave: (record: DataRecord) => void;
 </script>
@@ -34,7 +47,7 @@
       </Typography>
     </Callout>
     <ModalContent>
-      {#each fields as field (field.name)}
+      {#each filteredFields as field (field.name)}
         <SettingItem name={field.name}>
           <FieldControl
             {field}
