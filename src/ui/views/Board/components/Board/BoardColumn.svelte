@@ -114,6 +114,7 @@
     {collapse}
     {checkField}
     {onColumnMenu}
+    onColumnCollapse={() => onColumnCollapse(name)}
     {onColumnRename}
     {onValidate}
   />

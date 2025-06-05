@@ -26,6 +26,7 @@
   }
 
   export let onColumnMenu: () => Menu;
+  export let onColumnCollapse: (name: string) => void;
 
   function handleClick(event: MouseEvent) {
     const targetEl = event.target as HTMLElement;
@@ -73,13 +74,34 @@
   }}
 >
   {#if editing}
-    <TextInput
-      noPadding
-      embed
-      bind:ref={inputRef}
-      bind:value
-      on:keydown={(event) => {
-        if (event.key === "Enter") {
+    <div class="title-container">
+      <TextInput
+        noPadding
+        embed
+        bind:ref={inputRef}
+        bind:value
+        on:keydown={(event) => {
+          if (event.key === "Enter") {
+            editing = false;
+
+            if (fallback == value) {
+              return;
+            }
+
+            if (!error) {
+              fallback = value;
+
+              onColumnRename(value);
+            } else {
+              rollback();
+            }
+          }
+          if (event.key === "Escape") {
+            editing = false;
+            rollback();
+          }
+        }}
+        on:blur={() => {
           editing = false;
 
           if (fallback == value) {
@@ -88,45 +110,42 @@
 
           if (!error) {
             fallback = value;
-
             onColumnRename(value);
           } else {
             rollback();
           }
-        }
-        if (event.key === "Escape") {
-          editing = false;
-          rollback();
-        }
-      }}
-      on:blur={() => {
-        editing = false;
-
-        if (fallback == value) {
-          return;
-        }
-
-        if (!error) {
-          fallback = value;
-          onColumnRename(value);
-        } else {
-          rollback();
-        }
-      }}
-    />
+        }}
+      />
+    </div>
   {:else if richText}
-    <span
-      class:collapse
-      use:useMarkdown={value}
-      on:mouseover={(event) => handleHoverLink(event, "")}
-      on:focus
-      on:click={handleClick}
-      on:keypress
-    />
+    <div class="title-container">
+      <span
+        class:collapse
+        use:useMarkdown={value}
+        on:mouseover={(event) => handleHoverLink(event, "")}
+        on:focus
+        on:click={handleClick}
+        on:keypress
+      />
+      <IconButton
+        icon={collapse ? "chevrons-left-right" : "chevrons-right-left"}
+        size="sm"
+        onClick={() => onColumnCollapse(value)}
+        tooltip={collapse ? "Expand column" : "Collapse column"}
+      />
+    </div>
   {:else}
-    <span class:collapse>
-      {value}
-    </span>
+    <div class="title-container">
+      <span class:collapse>
+        {value}
+      </span>
+      <IconButton
+        icon={collapse ? "chevrons-left-right" : "chevrons-right-left"}
+        size="sm"
+        onClick={() => onColumnCollapse(value)}
+        tooltip={collapse ? "Expand column" : "Collapse column"}
+      />
+    </div>
   {/if}
   <div class="right">
     {#if collapse || checkField}
@@ -162,6 +181,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .title-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .title-container span {
+    flex: 1;
+    min-width: 0;
   }
 
   .right {

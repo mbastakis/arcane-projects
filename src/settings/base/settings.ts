@@ -179,6 +179,18 @@ export type LinkBehavior = "open-note" | "open-editor";
 
 export type FirstDayOfWeek = "sunday" | "monday" | "default";
 
+export type GoogleCalendarSettings = {
+  readonly enabled: boolean;
+  readonly clientId: string;
+  readonly clientSecret: string;
+  readonly redirectUri?: string;
+  readonly accessToken?: string;
+  readonly refreshToken?: string;
+  readonly calendarId?: string;
+  readonly lastSync?: string;
+  readonly autoSyncInterval?: number; // minutes
+};
+
 export type ProjectsPluginPreferences = {
   readonly projectSizeLimit: number;
   readonly frontmatter: {
@@ -189,6 +201,7 @@ export type ProjectsPluginPreferences = {
   };
   readonly commands: ShowCommand[];
   readonly linkBehavior: LinkBehavior;
+  readonly googleCalendar: GoogleCalendarSettings;
 };
 
 export type UnsavedViewDefinition = Omit<

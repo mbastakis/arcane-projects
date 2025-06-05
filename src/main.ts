@@ -10,6 +10,8 @@ import { api } from "src/lib/stores/api";
 import { i18n } from "src/lib/stores/i18n";
 import { app, plugin } from "src/lib/stores/obsidian";
 import { settings } from "src/lib/stores/settings";
+import { GoogleCalendarSyncManager } from "src/lib/googleCalendar/syncManager";
+import { googleCalendarConfig } from "src/lib/stores/googleCalendar";
 import { CreateNoteModal } from "src/ui/modals/createNoteModal";
 import { CreateProjectModal } from "src/ui/modals/createProjectModal";
 import { get, type Unsubscriber } from "svelte/store";
@@ -32,6 +34,23 @@ const PROJECTS_PLUGIN_ID = "obsidian-projects";
 
 export default class ProjectsPlugin extends Plugin {
   unsubscribeSettings?: Unsubscriber;
+  googleCalendarSyncManager?: GoogleCalendarSyncManager;
+
+  /**
+   * Maps settings to Google Calendar configuration
+   */
+  private mapSettingsToGoogleCalendarConfig(gcSettings: any) {
+    return {
+      enabled: gcSettings.enabled,
+      clientId: gcSettings.clientId,
+      clientSecret: gcSettings.clientSecret,
+      calendarId: gcSettings.calendarId || "",
+      syncInterval: gcSettings.autoSyncInterval || 15,
+      autoSync: gcSettings.autoSyncInterval ? gcSettings.autoSyncInterval > 0 : false,
+      ...(gcSettings.accessToken && { accessToken: gcSettings.accessToken }),
+      ...(gcSettings.refreshToken && { refreshToken: gcSettings.refreshToken }),
+    };
+  }
 
   /**
    * onload runs when the plugin is enabled.
@@ -157,6 +176,23 @@ export default class ProjectsPlugin extends Plugin {
       },
     });
 
+    // Command to manually sync Google Calendar
+    this.addCommand({
+      id: "sync-google-calendar",
+      name: t("commands.sync-google-calendar.name") || "Sync Google Calendar",
+      checkCallback: (checking) => {
+        const canSync = this.googleCalendarSyncManager?.isSyncAvailable();
+        
+        if (canSync) {
+          if (!checking) {
+            this.googleCalendarSyncManager?.performManualSync();
+          }
+          return true;
+        }
+        return false;
+      },
+    });
+
     // Initialize Svelte stores so that Svelte components can access the App and
     // Plugin objects.
     app.set(this.app);
@@ -166,11 +202,18 @@ export default class ProjectsPlugin extends Plugin {
     this.unsubscribeSettings = settings.subscribe((value) => {
       this.ensureCommands(value.preferences.commands, value.projects);
       this.saveData(value);
+      
+      // Update Google Calendar store when settings change
+      const gcSettings = value.preferences.googleCalendar;
+      googleCalendarConfig.set(this.mapSettingsToGoogleCalendarConfig(gcSettings));
     });
 
     const watcher = new ObsidianFileSystemWatcher(this);
 
     registerFileEvents(watcher);
+
+    // Initialize Google Calendar sync manager
+    this.googleCalendarSyncManager = new GoogleCalendarSyncManager(get(api));
   }
 
   /**
@@ -180,6 +223,10 @@ export default class ProjectsPlugin extends Plugin {
   async onunload(): Promise<void> {
     if (this.unsubscribeSettings) {
       this.unsubscribeSettings();
+    }
+    
+    if (this.googleCalendarSyncManager) {
+      this.googleCalendarSyncManager.destroy();
     }
   }
 
@@ -199,6 +246,10 @@ export default class ProjectsPlugin extends Plugin {
           },
           (value) => {
             settings.set(value);
+            
+            // Initialize Google Calendar store with settings
+            const gcSettings = value.preferences.googleCalendar;
+            googleCalendarConfig.set(this.mapSettingsToGoogleCalendarConfig(gcSettings));
           }
         )
       )

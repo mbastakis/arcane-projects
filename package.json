@@ -70,5 +70,8 @@
     "rimraf": "^6.0.1",
     "sourcemap-codec": "@jridgewell/sourcemap-codec",
     "inflight": "^1.0.6"
+  },
+  "dependencies": {
+    "googleapis": "^149.0.0"
   }
 }

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
+const fs = require("fs");
+const path = require("path");
+const readline = require("readline");
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 function question(prompt) {
@@ -33,19 +33,23 @@ function ensureDirectoryExists(dirPath) {
 
 async function main() {
   try {
-    console.log('🔌 Obsidian Plugin Installer');
-    console.log('============================\n');
+    console.log("🔌 Obsidian Plugin Installer");
+    console.log("============================\n");
 
     // Prompt for vault path
-    const vaultPath = await question('Enter the path to your Obsidian vault: ');
-    
+    const vaultPath = await question(
+      "Enter the path to your Obsidian vault: (/Users/A200407315/Documents/NotesOfTheGods)"
+    );
+
     if (!vaultPath.trim()) {
-      console.error('❌ Vault path cannot be empty');
-      process.exit(1);
+      console.info("❌ Vault path cannot be empty");
+      console.info("Using default vault path: /Users/A200407315/Documents/NotesOfTheGods");
+      vaultPath = "/Users/A200407315/Documents/NotesOfTheGods";
+      // process.exit(1);
     }
 
-    const expandedVaultPath = vaultPath.replace(/^~/, require('os').homedir());
-    
+    const expandedVaultPath = vaultPath.replace(/^~/, require("os").homedir());
+
     // Validate vault path exists
     if (!fs.existsSync(expandedVaultPath)) {
       console.error(`❌ Vault path does not exist: ${expandedVaultPath}`);
@@ -53,34 +57,41 @@ async function main() {
     }
 
     // Read plugin manifest to get plugin ID
-    const manifestPath = path.join(__dirname, '..', 'manifest.json');
+    const manifestPath = path.join(__dirname, "..", "manifest.json");
     if (!fs.existsSync(manifestPath)) {
-      console.error('❌ manifest.json not found. Please build the plugin first.');
+      console.error(
+        "❌ manifest.json not found. Please build the plugin first."
+      );
       process.exit(1);
     }
 
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
     const pluginId = manifest.id;
 
     if (!pluginId) {
-      console.error('❌ Plugin ID not found in manifest.json');
+      console.error("❌ Plugin ID not found in manifest.json");
       process.exit(1);
     }
 
     // Create plugin directory in vault
-    const pluginDir = path.join(expandedVaultPath, '.obsidian', 'plugins', pluginId);
+    const pluginDir = path.join(
+      expandedVaultPath,
+      ".obsidian",
+      "plugins",
+      pluginId
+    );
     ensureDirectoryExists(pluginDir);
 
     console.log(`\n📁 Installing plugin to: ${pluginDir}\n`);
 
     // Files to copy
     const filesToCopy = [
-      { src: 'main.js', required: true },
-      { src: 'manifest.json', required: true },
-      { src: 'styles.css', required: false }
+      { src: "main.js", required: true },
+      { src: "manifest.json", required: true },
+      { src: "styles.css", required: false },
     ];
 
-    const projectRoot = path.join(__dirname, '..');
+    const projectRoot = path.join(__dirname, "..");
     let copyCount = 0;
 
     for (const file of filesToCopy) {
@@ -91,7 +102,9 @@ async function main() {
         copyFile(srcPath, destPath);
         copyCount++;
       } else if (file.required) {
-        console.error(`❌ Required file not found: ${file.src}. Please build the plugin first.`);
+        console.error(
+          `❌ Required file not found: ${file.src}. Please build the plugin first.`
+        );
         process.exit(1);
       } else {
         console.log(`⚠️  Optional file not found: ${file.src} (skipping)`);
@@ -102,8 +115,9 @@ async function main() {
     console.log(`📊 ${copyCount} files copied`);
     console.log(`🔧 Plugin ID: ${pluginId}`);
     console.log(`📍 Location: ${pluginDir}`);
-    console.log('\n💡 Don\'t forget to enable the plugin in Obsidian\'s Community Plugins settings!');
-
+    console.log(
+      "\n💡 Don't forget to enable the plugin in Obsidian's Community Plugins settings!"
+    );
   } catch (error) {
     console.error(`❌ Error: ${error.message}`);
     process.exit(1);

@@ -44,6 +44,13 @@ export const DEFAULT_SETTINGS: ProjectsPluginSettings<
     },
     commands: [],
     linkBehavior: "open-editor",
+    googleCalendar: {
+      enabled: false,
+      clientId: "",
+      clientSecret: "",
+      calendarId: "",
+      autoSyncInterval: 15,
+    },
   },
 };
 

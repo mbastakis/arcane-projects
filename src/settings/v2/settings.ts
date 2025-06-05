@@ -92,6 +92,13 @@ export const DEFAULT_SETTINGS: ProjectsPluginSettings<
     },
     commands: [],
     linkBehavior: "open-editor",
+    googleCalendar: {
+      enabled: false,
+      clientId: "",
+      clientSecret: "",
+      redirectUri: "http://localhost:8080/auth/callback", // Default redirect URI for Desktop apps
+      autoSyncInterval: 15, // 15 minutes
+    },
   },
 };
 
@@ -174,6 +181,13 @@ export const DEFAULT_PREFERENCES: ProjectsPluginPreferences = {
   },
   commands: [],
   linkBehavior: "open-editor",
+  googleCalendar: {
+    enabled: false,
+    clientId: "",
+    clientSecret: "",
+    redirectUri: "", // Optional: defaults to localhost for web clients
+    autoSyncInterval: 15, // 15 minutes
+  },
 };
 
 export function resolvePreferences(

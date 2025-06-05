@@ -9,6 +9,7 @@
   } from "obsidian-svelte";
   import DateInput from "../DateInput.svelte";
   import DatetimeInput from "../DatetimeInput.svelte";
+  import TimeInput from "../TimeInput.svelte";
   import dayjs from "dayjs";
 
   import { TagList } from "src/ui/components/TagList";
@@ -45,7 +46,13 @@
 {:else if field.repeated && isOptionalList(value)}
   <TagList edit={!readonly} values={value ?? []} {onChange} />
 {:else if field.type === DataFieldType.String}
-  {#if options.length > 0}
+  {#if field.name === 'start-time' || field.name === 'end-time'}
+    <!-- Special handling for time fields -->
+    <TimeInput
+      value={isString(value) ? value : null}
+      on:change={({ detail }) => onChange(detail)}
+    />
+  {:else if options.length > 0}
     <Autocomplete
       value={isString(value) ? value : ""}
       {options}

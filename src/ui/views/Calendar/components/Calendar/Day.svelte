@@ -2,6 +2,7 @@
   import dayjs from "dayjs";
   import { Menu } from "obsidian";
   import type { DataRecord } from "src/lib/dataframe/dataframe";
+  import type { VirtualEventInstance } from "src/lib/googleCalendar/types";
   import { i18n } from "src/lib/stores/i18n";
   import Date from "./Date.svelte";
   import EventList from "./EventList.svelte";
@@ -20,7 +21,7 @@
   /**
    * Specifies the records representing the calendar events.
    */
-  export let records: DataRecord[];
+  export let records: (DataRecord | VirtualEventInstance)[];
 
   /**
    * Specifies the field to use for determining checkbox state.
@@ -30,22 +31,27 @@
   /**
    * onRecordClick runs when the user clicks a calendar event.
    */
-  export let onRecordClick: (record: DataRecord) => void;
+  export let onRecordClick: (record: DataRecord | VirtualEventInstance) => void;
 
   /**
    * onRecordCheck runs when the user Checks / Unchecks a calendar event.
    */
-  export let onRecordCheck: (record: DataRecord, checked: boolean) => void;
+  export let onRecordCheck: (record: DataRecord | VirtualEventInstance, checked: boolean) => void;
 
   /**
    * onRecordChange runs when the user changes the checked state.
    */
-  export let onRecordChange: (record: DataRecord) => void;
+  export let onRecordChange: (record: DataRecord | VirtualEventInstance) => void;
 
   /**
    * onRecordAdd runs when the user creates a new calendar event on this day.
    */
   export let onRecordAdd: () => void;
+
+  /**
+   * onRecordDelete runs when the user deletes a calendar event.
+   */
+  export let onRecordDelete: (record: DataRecord | VirtualEventInstance) => void;
 
   $: weekend = date.day() === 0 || date.day() === 6;
   $: today = date.startOf("day").isSame(dayjs().startOf("day"));
@@ -80,6 +86,7 @@
     {onRecordClick}
     {onRecordCheck}
     {onRecordChange}
+    {onRecordDelete}
   />
 </div>
 
