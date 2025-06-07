@@ -80,6 +80,19 @@
       );
     };
 
+  const handleRecordSetDone =
+    (groupByField: DataField | undefined) =>
+    (record: DataRecord) => {
+      if (groupByField?.name) {
+        api.updateRecord(
+          updateRecordValues(record, {
+            [groupByField.name]: "Done",
+          }),
+          fields
+        );
+      }
+    };
+
   const handleRecordUpdate =
     (groupByField: DataField | undefined): OnRecordUpdate =>
     (record, { id: column, records }, trigger) => {
@@ -440,6 +453,7 @@
     customHeader={fields.find((field) => field.name === customHeader)}
     onRecordClick={handleRecordClick}
     onRecordCheck={handleRecordCheck(checkField)}
+    onRecordSetDone={handleRecordSetDone(groupByField)}
     onRecordAdd={handleRecordAdd(groupByField)}
     onRecordUpdate={handleRecordUpdate(groupByField)}
     onColumnAdd={handleColumnAdd(groupByField)}

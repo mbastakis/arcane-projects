@@ -31,12 +31,14 @@
     DropTrigger,
     OnRecordClick,
     OnRecordCheck,
+    OnRecordSetDone,
     OnRecordDrop,
   } from "./types";
 
   export let items: DataRecord[];
   export let onRecordClick: OnRecordClick;
   export let onRecordCheck: OnRecordCheck;
+  export let onRecordSetDone: OnRecordSetDone;
   export let onDrop: OnRecordDrop;
   export let includeFields: DataField[];
   export let checkField: string | undefined;
@@ -79,6 +81,15 @@
         .setIcon("edit")
         .onClick(() => {
           onRecordClick(record);
+        });
+    });
+
+    menu.addItem((item) => {
+      item
+        .setTitle("Set to Done")
+        .setIcon("checkmark")
+        .onClick(() => {
+          onRecordSetDone(record);
         });
     });
 

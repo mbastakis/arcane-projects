@@ -9,6 +9,7 @@
     OnRecordAdd,
     OnRecordClick,
     OnRecordCheck,
+    OnRecordSetDone,
     OnRecordUpdate,
     OnSortColumns,
     OnColumnAdd,
@@ -24,6 +25,7 @@
   export let richText: boolean;
   export let onRecordClick: OnRecordClick;
   export let onRecordCheck: OnRecordCheck;
+  export let onRecordSetDone: OnRecordSetDone;
   export let onRecordUpdate: OnRecordUpdate;
   export let onRecordAdd: OnRecordAdd;
   export let columnWidth: number;
@@ -84,6 +86,7 @@
           {onRecordClick}
           {checkField}
           {onRecordCheck}
+          {onRecordSetDone}
           onRecordAdd={() => onRecordAdd(column.id)}
           onDrop={(record, records, trigger) => {
             switch (trigger) {
