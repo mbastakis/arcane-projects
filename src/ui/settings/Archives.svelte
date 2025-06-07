@@ -5,7 +5,7 @@
     SettingItem,
     Typography,
   } from "obsidian-svelte";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { ConfirmDialogModal } from "src/ui/modals/confirmDialog";
   import type { ProjectDefinition, ProjectId } from "src/settings/settings";
@@ -14,15 +14,15 @@
   const dataSourceDetail = (archive: ProjectDefinition) => {
     switch (archive.dataSource.kind) {
       case "folder":
-        return `${$i18n.t("datasources.folder")}: "${normalizePath(
+        return `Folder: "${normalizePath(
           archive.dataSource.config.path
         )}", subfolder: ${archive.dataSource.config.recursive}`;
       case "tag":
-        return `${$i18n.t("datasources.tag")}: ${
+        return `Tag: ${
           archive.dataSource.config.tag
         }, hierarchy: ${archive.dataSource.config.hierarchy}`;
       case "dataview":
-        return `${$i18n.t("datasources.dataview")} query: ${
+        return `Dataview query: ${
           archive.dataSource.config.query
         }`;
     }
@@ -41,7 +41,7 @@
 
 {#if !archives.length}
   <Callout title={"Info"} icon="info" variant="info">
-    <Typography variant="body">{$i18n.t("settings.archives.empty")}</Typography>
+    <Typography variant="body">No archived projects yet.</Typography>
   </Callout>
 {:else}
   {#each archives as archive}
@@ -57,11 +57,9 @@
         onClick={() => {
           new ConfirmDialogModal(
             $app,
-            $i18n.t("modals.archive.delete.title"),
-            $i18n.t("modals.archive.delete.message", {
-              archive: archive?.name ?? "",
-            }),
-            $i18n.t("modals.project.delete.cta"),
+            "Delete archive",
+            `Are you sure you want to delete the archive "${archive?.name ?? ""}"? This action cannot be undone.`,
+            "Delete",
             () => {
               onDelete(archive.id);
             }

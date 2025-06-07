@@ -20,7 +20,7 @@
   import { notEmpty } from "src/lib/helpers";
   import { getFoldersInFolder, isValidPath } from "src/lib/obsidian";
   import { capabilities } from "src/lib/stores/capabilities";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { settings } from "src/lib/stores/settings";
   import { interpolateTemplate } from "src/lib/templates/interpolate";
@@ -44,13 +44,13 @@
   $: nameError = validateName(name);
 
   const dataSourceOptions = [
-    { label: $i18n.t("datasources.folder"), value: "folder" },
-    { label: $i18n.t("datasources.tag"), value: "tag" },
+    { label: "Folder", value: "folder" },
+    { label: "Tag", value: "tag" },
   ];
 
   if ($capabilities.dataview) {
     dataSourceOptions.push({
-      label: $i18n.t("datasources.dataview"),
+      label: "Dataview",
       value: "dataview",
     });
   }
@@ -87,11 +87,11 @@
     }
 
     if (name.trim() === "") {
-      return $i18n.t("modals.project.create.empty-name-error");
+      return "Name is required";
     }
 
     if (projects.find((project) => project.name === name)) {
-      return $i18n.t("modals.project.create.existing-name-error");
+      return "A project with this name already exists";
     }
 
     return "";
@@ -101,8 +101,8 @@
 <ModalLayout {title}>
   <ModalContent>
     <SettingItem
-      name={$i18n.t("modals.project.name.name")}
-      description={$i18n.t("modals.project.name.description") ?? ""}
+      name="Name"
+      description="The name of the project."
     >
       <TextInput
         value={project.name}
@@ -113,8 +113,8 @@
       />
     </SettingItem>
     <SettingItem
-      name={$i18n.t("modals.project.default.name")}
-      description={$i18n.t("modals.project.default.description") ?? ""}
+      name="Default view"
+      description="The default view for the project."
     >
       <Switch
         checked={project.isDefault ?? false}
@@ -124,8 +124,8 @@
     </SettingItem>
 
     <SettingItem
-      name={$i18n.t("modals.project.datasource.name")}
-      description={$i18n.t("modals.project.datasource.description")}
+      name="Data source"
+      description="The data source for the project."
     >
       <Select
         value={project.dataSource.kind}
@@ -136,8 +136,8 @@
 
     {#if project.dataSource.kind === "folder"}
       <SettingItem
-        name={$i18n.t("modals.project.path.name")}
-        description={$i18n.t("modals.project.path.description") ?? ""}
+        name="Path"
+        description="The path to the folder containing the notes for this project."
         vertical
       >
         <FileAutocomplete
@@ -161,8 +161,8 @@
       </SettingItem>
 
       <SettingItem
-        name={$i18n.t("modals.project.recursive.name")}
-        description={$i18n.t("modals.project.recursive.description") ?? ""}
+        name="Include subfolders"
+        description="Include notes from subfolders."
       >
         <Switch
           checked={project.dataSource.config.recursive}
@@ -183,8 +183,8 @@
 
     {#if project.dataSource.kind === "tag"}
       <SettingItem
-        name={$i18n.t("modals.project.tag.name")}
-        description={$i18n.t("modals.project.tag.description") ?? ""}
+        name="Tag"
+        description="The tag to include notes from."
         vertical
       >
         <TextInput
@@ -206,8 +206,8 @@
       </SettingItem>
 
       <SettingItem
-        name={$i18n.t("modals.project.hierarchy.name")}
-        description={$i18n.t("modals.project.hierarchy.description")}
+        name="Include tag hierarchy"
+        description="Include notes with nested tags."
       >
         <Switch
           checked={project.dataSource.config.hierarchy}
@@ -229,8 +229,8 @@
     {#if project.dataSource.kind === "dataview"}
       {#if $capabilities.dataview}
         <SettingItem
-          name={$i18n.t("modals.project.query.name")}
-          description={$i18n.t("modals.project.query.description") ?? ""}
+          name="Query"
+          description="The Dataview query to use for this project."
           vertical
         >
           <TextArea
@@ -253,12 +253,13 @@
         </SettingItem>
       {:else}
         <Callout
-          title={$i18n.t("modals.project.dataview.error.title")}
+          title="Dataview is not available"
           icon="zap"
           variant="danger"
         >
           <Typography variant="body">
-            {$i18n.t("modals.project.dataview.error.message")}
+            The Dataview plugin is required to use this data source. Please
+            install and enable Dataview to continue.
           </Typography>
         </Callout>
       {/if}
@@ -268,13 +269,12 @@
       <AccordionItem>
         <div slot="header" class="setting-item-info" style:margin-top="8px">
           <div class="setting-item-name">
-            {$i18n.t("modals.project.more-settings.name")}
+            More settings
           </div>
         </div>
         <SettingItem
-          name={$i18n.t("modals.project.newNotesFolder.name")}
-          description={$i18n.t("modals.project.newNotesFolder.description") ??
-            ""}
+          name="New notes folder"
+          description="The folder where new notes created in this project will be saved."
         >
           <FileAutocomplete
             files={getFoldersInFolder($app.vault.getRoot())}
@@ -293,8 +293,8 @@
         </SettingItem>
 
         <SettingItem
-          name={$i18n.t("modals.project.defaultName.name")}
-          description={$i18n.t("modals.project.defaultName.description") ?? ""}
+          name="Default note name"
+          description="The default name for new notes created in this project. Use {'{'}date{'}'} for the current date and {'{'}time{'}'} for the current time."
           vertical
         >
           <TextInput
@@ -308,30 +308,30 @@
           </small>
           {#if !isValidPath(defaultName)}
             <small class="error"
-              >{$i18n.t("modals.project.defaultName.invalid")}</small
+              >File name is not valid</small
             >
           {/if}
         </SettingItem>
 
         <SettingItem
-          name={$i18n.t("modals.project.templates.name")}
-          description={$i18n.t("modals.project.templates.description") ?? ""}
+          name="Templates"
+          description="Templates to use when creating new notes in this project."
           vertical
         >
           <FileListInput
-            buttonText={$i18n.t("modals.project.templates.add")}
+            buttonText="Add template"
             paths={project.templates ?? []}
             onPathsChange={(templates) => (project = { ...project, templates })}
           />
         </SettingItem>
 
         <SettingItem
-          name={$i18n.t("modals.project.exclude.name")}
-          description={$i18n.t("modals.project.exclude.description") ?? ""}
+          name="Exclude"
+          description="Folders and files to exclude from this project."
           vertical
         >
           <FileListInput
-            buttonText={$i18n.t("modals.project.exclude.add")}
+            buttonText="Add path"
             paths={project.excludedNotes ?? []}
             onPathsChange={(excludedNotes) =>
               (project = { ...project, excludedNotes })}

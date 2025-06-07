@@ -1,9 +1,7 @@
 import moment from "moment";
 import { App, Modal } from "obsidian";
-import { get } from "svelte/store";
 
 import { nextUniqueFileName } from "src/lib/helpers";
-import { i18n } from "src/lib/stores/i18n";
 import { interpolateTemplate } from "src/lib/templates/interpolate";
 
 import CreateNote from "./components/CreateNote.svelte";
@@ -47,7 +45,7 @@ export class CreateNoteModal extends Modal {
             })
           : nextUniqueFileName(
               this.getNewNotesFolder(this.project),
-              get(i18n).t("modals.note.create.untitled")
+              "Untitled"
             ),
         project: this.project,
         onSave: (

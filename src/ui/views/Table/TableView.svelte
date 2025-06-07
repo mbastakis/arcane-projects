@@ -5,7 +5,6 @@
     type DataRecord,
   } from "src/lib/dataframe/dataframe";
   import { createDataRecord } from "src/lib/dataApi";
-  import { i18n } from "src/lib/stores/i18n";
   import { app } from "src/lib/stores/obsidian";
   import type { ViewApi } from "src/lib/viewApi";
   import { CreateNoteModal } from "src/ui/modals/createNoteModal";
@@ -219,7 +218,7 @@
     <ViewToolbar variant="secondary">
       <svelte:fragment slot="right">
         <SwitchSelect
-          label={$i18n.t("views.table.hide-fields")}
+          label="Hide fields"
           items={columns.map((column) => ({
             label: column.field,
             icon: fieldIcon(column),
@@ -275,7 +274,7 @@
           if (field) {
             new ConfigureFieldModal(
               $app,
-              $i18n.t("modals.field.configure.title"),
+              "Configure field",
               field,
               fields.filter((f) => f.name !== field.name),
               editable,
@@ -331,7 +330,7 @@
           }}
         >
           <Icon name="plus" />
-          <TextLabel value={$i18n.t("components.data-grid.column.add")} />
+          <TextLabel value="Add field" />
         </span>
       {/if}
     </div>

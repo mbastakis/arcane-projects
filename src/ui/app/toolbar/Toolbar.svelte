@@ -1,7 +1,7 @@
 <script lang="ts">
   import ViewToolbar from "src/ui/components/Layout/ViewToolbar.svelte";
   import { createProject } from "src/lib/dataApi";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { dataFrame } from "src/lib/stores/dataframe";
   import { settings } from "src/lib/stores/settings";
@@ -65,8 +65,8 @@
     onProjectAdd={() =>
       new CreateProjectModal(
         $app,
-        $i18n.t("modals.project.create.title"),
-        $i18n.t("modals.project.create.cta"),
+        "Create new project",
+        "Create project",
         (project) => {
           settings.addProject(project);
           projectId = project.id;
@@ -111,11 +111,9 @@
         onViewDelete={(viewId) => {
           new ConfirmDialogModal(
             $app,
-            $i18n.t("modals.view.delete.title"),
-            $i18n.t("modals.view.delete.message", {
-              view: view?.name ?? "",
-            }),
-            $i18n.t("modals.view.delete.cta"),
+            "Delete view",
+            `Are you sure you want to delete the view "${view?.name ?? ""}"?`,
+            "Delete",
             () => {
               if (projectId) {
                 settings.deleteView(projectId, viewId);

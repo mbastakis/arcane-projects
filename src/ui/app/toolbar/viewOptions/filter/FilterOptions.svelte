@@ -33,7 +33,7 @@
     setOperator,
     setValue,
   } from "./helpers";
-  import { i18n } from "src/lib/stores/i18n";
+
 
   export let filter: FilterDefinition;
   export let fields: DataField[];
@@ -103,14 +103,14 @@
     <HorizontalGroup>
       <div class="setting-item-name" style="width: 8ch">
         {#if i === 0}
-          {$i18n.t("components.filter.where")}
+          where
         {:else}
           <Select
             value={filter.conjunction ?? "and"}
             disabled={i !== 1}
             options={[
-              { label: $i18n.t("components.filter.and"), value: "and" },
-              { label: $i18n.t("components.filter.or"), value: "or" },
+              { label: "and", value: "and" },
+              { label: "or", value: "or" },
             ]}
             on:change={handleConjunctionChange}
           />
@@ -168,7 +168,7 @@
   {/each}
   <HorizontalGroup>
     <Button variant="plain" on:click={handleConditionAdd}
-      ><Icon name="plus" />{$i18n.t("components.filter.add")}</Button
+      ><Icon name="plus" />Add filter</Button
     >
   </HorizontalGroup>
 </div>

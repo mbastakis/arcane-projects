@@ -2,7 +2,7 @@
   import { Menu } from "obsidian";
   import { Icon, IconButton, TextInput } from "obsidian-svelte";
   import { createEventDispatcher } from "svelte";
-  import { i18n } from "src/lib/stores/i18n";
+
 
   /**
    * Specifies the button label.
@@ -129,7 +129,7 @@
 
         menu.addItem((item) => {
           item
-            .setTitle($i18n.t("modals.view.duplicate.title"))
+            .setTitle("Duplicate view")
             .setIcon("copy")
             .onClick(() => {
               dispatch("duplicate");
@@ -138,7 +138,7 @@
 
         menu.addItem((item) => {
           item
-            .setTitle($i18n.t("modals.view.delete.title"))
+            .setTitle("Delete view")
             .setIcon("trash")
             .setWarning(true)
             .onClick(() => {

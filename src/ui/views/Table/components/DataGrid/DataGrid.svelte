@@ -3,7 +3,7 @@
 
   import { Menu } from "obsidian";
 
-  import { i18n } from "src/lib/stores/i18n";
+
 
   import GridRow from "./GridRow.svelte";
 
@@ -38,7 +38,7 @@
   export let onRowDelete: (rowId: GridRowId) => void;
   export let onRowEdit: (rowId: GridRowId, row: GridRowModel) => void;
 
-  $: t = $i18n.t;
+
 
   $: visibleColumns = columns.filter((column) => !column.hide);
   $: sortedColumns = visibleColumns;
@@ -243,7 +243,7 @@
       <span class="focus-provider">
         <Button variant="plain" on:click={() => onRowAdd()}>
           <Icon name="plus" />
-          {t("components.data-grid.row.add")}
+          Add row
         </Button>
       </span>
     </span>

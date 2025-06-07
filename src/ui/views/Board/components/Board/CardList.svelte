@@ -19,7 +19,7 @@
     menuOnContextMenu,
   } from "src/ui/views/helpers";
   import { Menu } from "obsidian";
-  import { i18n } from "src/lib/stores/i18n";
+
   import {
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     TRIGGERS,
@@ -77,7 +77,7 @@
 
     menu.addItem((item) => {
       item
-        .setTitle($i18n.t("modals.note.edit.title"))
+        .setTitle("Edit note")
         .setIcon("edit")
         .onClick(() => {
           onRecordClick(record);

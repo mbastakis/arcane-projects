@@ -7,7 +7,6 @@ import { Plugin, TFolder, WorkspaceLeaf, addIcon } from "obsidian";
 import "obsidian-dataview";
 import { createDataRecord, createProject } from "src/lib/dataApi";
 import { api } from "src/lib/stores/api";
-import { i18n } from "src/lib/stores/i18n";
 import { app, plugin } from "src/lib/stores/obsidian";
 import { settings } from "src/lib/stores/settings";
 import { GoogleCalendarSyncManager } from "src/lib/googleCalendar/syncManager";
@@ -58,9 +57,6 @@ export default class ProjectsPlugin extends Plugin {
   async onload(): Promise<void> {
     await this.loadSettings();
 
-    // Helper function for translation.
-    const { t } = get(i18n);
-
     this.addSettingTab(new ProjectsSettingTab(this.app, this));
 
     addIcon(
@@ -75,7 +71,7 @@ export default class ProjectsPlugin extends Plugin {
       `
     );
 
-    this.addRibbonIcon("projects-icon", t("obsidian.ribbon-tooltip"), () => {
+    this.addRibbonIcon("projects-icon", "Open projects", () => {
       this.activateView();
     });
 
@@ -86,7 +82,7 @@ export default class ProjectsPlugin extends Plugin {
 
     this.registerHoverLinkSource(VIEW_TYPE_PROJECTS, {
       defaultMod: true,
-      display: t("obsidian.hover-link-settings"),
+      display: "Projects",
     });
 
     // Allow the user to create a project by right-clicking a folder in the
@@ -96,15 +92,15 @@ export default class ProjectsPlugin extends Plugin {
         if (file instanceof TFolder) {
           menu.addItem((item) => {
             item
-              .setTitle(t("menus.project.create.title"))
+              .setTitle("Create project")
               .setIcon("folder-plus")
               .onClick(async () => {
                 const project = createProject();
 
                 new CreateProjectModal(
                   this.app,
-                  t("modals.project.create.title"),
-                  t("modals.project.create.cta"),
+                  "Create project",
+                  "Create",
                   settings.addProject,
                   {
                     ...project,
@@ -127,7 +123,7 @@ export default class ProjectsPlugin extends Plugin {
     // Command to show the Projects view.
     this.addCommand({
       id: "show-projects",
-      name: t("commands.show-projects.name"),
+      name: "Show projects",
       callback: () => {
         this.activateView();
       },
@@ -136,12 +132,12 @@ export default class ProjectsPlugin extends Plugin {
     // Command to create a new project.
     this.addCommand({
       id: "create-project",
-      name: t("commands.create-project.name"),
+      name: "Create new project",
       callback: () => {
         new CreateProjectModal(
           this.app,
-          t("modals.project.create.title"),
-          t("modals.project.create.cta"),
+          "Create project",
+          "Create",
           settings.addProject,
           createProject()
         ).open();
@@ -151,7 +147,7 @@ export default class ProjectsPlugin extends Plugin {
     // Command to create a new note.
     this.addCommand({
       id: "create-note",
-      name: t("commands.create-note.name"),
+      name: "Create new note",
       // checkCallback because we don't want to create notes if there are no
       // projects.
       checkCallback: (checking) => {
@@ -179,7 +175,7 @@ export default class ProjectsPlugin extends Plugin {
     // Command to manually sync Google Calendar
     this.addCommand({
       id: "sync-google-calendar",
-      name: t("commands.sync-google-calendar.name") || "Sync Google Calendar",
+      name: "Sync Google Calendar",
       checkCallback: (checking) => {
         const canSync = this.googleCalendarSyncManager?.isSyncAvailable();
         

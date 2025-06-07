@@ -5,10 +5,8 @@ import {
   Menu,
   type ViewStateResult,
 } from "obsidian";
-import { get } from "svelte/store";
 
 import App from "src/ui/app/App.svelte";
-import { i18n } from "./lib/stores/i18n";
 import { customViews } from "src/lib/stores/customViews";
 import { view } from "src/lib/stores/obsidian";
 import { BoardView } from "src/ui/views/Board";
@@ -59,7 +57,7 @@ export class ProjectsView extends ItemView {
       super.onPaneMenu(menu, source);
       menu.addItem((item) => {
         item
-          .setTitle(get(i18n).t("menus.tab-header.new-window.title"))
+          .setTitle("Open in new window")
           .setIcon("picture-in-picture-2")
           .onClick(() => {
             const existingLeaves =

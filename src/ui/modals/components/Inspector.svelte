@@ -11,7 +11,7 @@
   import { AccordionItem } from "src/ui/components/Accordion";
   import type { RecordError } from "src/lib/datasources/frontmatter/datasource";
 
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { getDisplayName } from "src/ui/views/Board/components/Board/boardHelpers";
 
@@ -68,7 +68,7 @@
     <Button
       on:click={() => {
         onCancel();
-      }}>{$i18n.t("modals.input.cancel")}</Button
+      }}>Cancel</Button
     >
   </ModalButtonGroup>
 </ModalLayout>

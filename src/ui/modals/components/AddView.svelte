@@ -12,7 +12,7 @@
 
   import { nextUniqueViewName } from "src/lib/helpers";
   import { customViews } from "src/lib/stores/customViews";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { settings } from "src/lib/stores/settings";
   import {
     DEFAULT_VIEW,
@@ -32,8 +32,14 @@
     if (
       ["table", "board", "calendar", "gallery"].includes(view.getViewType()) // Maybe we need a enum of integrated view types here
     ) {
+      const viewTypeNames = {
+        table: "Table",
+        board: "Board", 
+        calendar: "Calendar",
+        gallery: "Gallery"
+      };
       return {
-        label: $i18n.t(["views", view.getViewType(), "name"].join(".")),
+        label: viewTypeNames[view.getViewType()] || view.getViewType(),
         value: view.getViewType(),
       };
     } else {
@@ -50,17 +56,17 @@
 
   function validateName(name: string) {
     if (project.views.find((view) => view.name === name)) {
-      return $i18n.t("modals.view.create.existing-name-error");
+      return "A view with this name already exists";
     }
     return "";
   }
 </script>
 
-<ModalLayout title={$i18n.t("modals.view.create.title")}>
+<ModalLayout title="Create view">
   <ModalContent>
     <SettingItem
-      name={$i18n.t("modals.view.create.type.name")}
-      description={$i18n.t("modals.view.create.type.description") ?? ""}
+      name="Type"
+      description="Choose which type of view to create"
     >
       <Select
         value={type}
@@ -72,21 +78,21 @@
     </SettingItem>
 
     <SettingItem
-      name={$i18n.t("modals.view.create.name.name")}
-      description={$i18n.t("modals.view.create.name.description") ?? ""}
+      name="Name"
+      description="The name of the view"
     >
       <TextInput
         value={name}
         on:input={({ detail: value }) => (name = value)}
-        placeholder={$i18n.t("modals.view.create.optional") ?? ""}
+        placeholder="Optional"
         error={!!nameError}
         helperText={nameError}
       />
     </SettingItem>
 
     <SettingItem
-      name={$i18n.t("modals.note.create.project.name")}
-      description={$i18n.t("modals.note.create.project.description") ?? ""}
+      name="Project"
+      description="Select which project this view belongs to"
     >
       <Select
         value={project.id}
@@ -117,7 +123,7 @@
             type,
           })
         );
-      }}>{$i18n.t("modals.view.create.cta")}</Button
+      }}>Create</Button
     >
   </ModalButtonGroup>
 </ModalLayout>

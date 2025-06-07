@@ -7,7 +7,6 @@
 
   import type { DataFrame, DataRecord } from "src/lib/dataframe/dataframe";
   import { createDataRecord } from "src/lib/dataApi";
-  import { i18n } from "src/lib/stores/i18n";
   import { app } from "src/lib/stores/obsidian";
   import type { ViewApi } from "src/lib/viewApi";
   import CenterBox from "src/ui/modals/components/CenterBox.svelte";
@@ -69,7 +68,7 @@
 
     menu.addItem((item) => {
       item
-        .setTitle($i18n.t("modals.note.edit.title"))
+        .setTitle("Edit note")
         .setIcon("edit")
         .onClick(() => {
           handleRecordClick(record);
@@ -184,7 +183,7 @@
     </Grid>
   {:else}
     <CenterBox>
-      <Typography variant="h5">{$i18n.t("views.gallery.empty")}</Typography>
+      <Typography variant="h5">This view is empty.</Typography>
     </CenterBox>
   {/if}
 </GalleryOptionsProvider>

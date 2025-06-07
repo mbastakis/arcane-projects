@@ -3,7 +3,7 @@
   import { Menu } from "obsidian";
   import type { DataRecord } from "src/lib/dataframe/dataframe";
   import type { VirtualEventInstance } from "src/lib/googleCalendar/types";
-  import { i18n } from "src/lib/stores/i18n";
+  
   import Date from "./Date.svelte";
   import EventList from "./EventList.svelte";
   import { menuOnContextMenu } from "src/ui/views/helpers";
@@ -64,7 +64,7 @@
     if (event.button === 2) {
       const menu = new Menu().addItem((item) => {
         item
-          .setTitle($i18n.t("views.calendar.new-note"))
+          .setTitle("New note")
           .setIcon("file-plus")
           .onClick(() => onRecordAdd());
       });

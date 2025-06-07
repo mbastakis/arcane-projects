@@ -8,7 +8,7 @@
     SettingItem,
   } from "obsidian-svelte";
   import { DataFieldType, type DataField } from "src/lib/dataframe/dataframe";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { fieldToSelectableValue } from "../../helpers";
   import { getFieldsByType } from "../board";
   import type { BoardConfig } from "../types";
@@ -36,11 +36,11 @@
     );
 </script>
 
-<ModalLayout title={$i18n.t("views.board.settings.name")}>
+<ModalLayout title="Board settings">
   <ModalContent>
     <SettingItem
-      name={$i18n.t("views.board.settings.column-width.name")}
-      description={$i18n.t("views.board.settings.column-width.description")}
+      name="Column width"
+      description="Maximum width of each column"
     >
       <NumberInput
         placeholder="270"
@@ -49,13 +49,13 @@
       />
     </SettingItem>
     <SettingItem
-      name={$i18n.t("views.board.settings.custom-header.name")}
-      description={$i18n.t("views.board.settings.custom-header.description")}
+      name="Custom header"
+      description="Display field instead of column name"
     >
       <Select
         value={headerField ?? ""}
         options={fields.map(fieldToSelectableValue)}
-        placeholder={$i18n.t("views.board.fields.none") ?? ""}
+        placeholder="None"
         allowEmpty
         on:change={(event) => {
           headerField = event.detail;
@@ -64,13 +64,13 @@
       />
     </SettingItem>
     <SettingItem
-      name={$i18n.t("views.board.settings.order-sync-field.name")}
-      description={$i18n.t("views.board.settings.order-sync-field.description")}
+      name="Order sync field"
+      description="Field to sync sorting order"
     >
       <Select
         value={orderSyncField ?? ""}
         options={validOrderSyncFields.map(fieldToSelectableValue)}
-        placeholder={$i18n.t("views.board.fields.none") ?? ""}
+        placeholder="None"
         allowEmpty
         on:change={(event) => {
           orderSyncField = event.detail;

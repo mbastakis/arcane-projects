@@ -7,7 +7,7 @@
   import { TagDataSource } from "src/lib/datasources/tag/datasource";
   import { dataFrame, dataSource } from "src/lib/stores/dataframe";
   import { fileSystem } from "src/lib/stores/fileSystem";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { settings } from "src/lib/stores/settings";
   import type { ProjectDefinition } from "src/settings/settings";
@@ -64,7 +64,7 @@
       return dataviewPlugin?.api;
     } else {
       throw new UnsupportedCapability(
-        get(i18n).t("errors.missingDataview.message")
+        "The Dataview plugin is required to use this project."
       );
     }
   }

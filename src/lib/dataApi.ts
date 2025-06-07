@@ -14,7 +14,6 @@ import {
 } from "./dataframe/dataframe";
 import { nextUniqueProjectName, notEmpty, getNameFromPath } from "./helpers";
 import { decodeFrontMatter, encodeFrontMatter } from "./metadata";
-import { i18n } from "./stores/i18n";
 import { settings } from "./stores/settings";
 import { interpolateTemplate } from "./templates/interpolate";
 
@@ -268,12 +267,12 @@ export function createProject(): ProjectDefinition {
     id: uuidv4(),
     name: nextUniqueProjectName(
       get(settings).projects,
-      get(i18n).t("modals.project.create.untitled")
+      "Untitled project"
     ),
     views: [
       Object.assign({}, DEFAULT_VIEW, {
         id: uuidv4(),
-        name: get(i18n).t("views.table.name"),
+        name: "Table",
         type: "table",
       }),
     ],

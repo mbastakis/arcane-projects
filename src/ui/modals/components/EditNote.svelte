@@ -12,7 +12,7 @@
 
   import { FieldControl } from "src/ui/components/FieldControl";
   import type { DataField, DataRecord } from "src/lib/dataframe/dataframe";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { isGoogleCalendarEvent, getGoogleCalendarFieldNames } from "src/lib/googleCalendar/mapping";
 
   export let fields: DataField[];
@@ -35,15 +35,15 @@
   export let onSave: (record: DataRecord) => void;
 </script>
 
-<ModalLayout title={$i18n.t("modals.note.edit.title")}>
+<ModalLayout title="Edit note">
   {#if !editableFields.length}
     <Callout
-      title={$i18n.t("modals.note.edit.no-editable-fields.title")}
+      title="No editable fields"
       icon="info"
       variant="info"
     >
       <Typography variant="body">
-        {$i18n.t("modals.note.edit.no-editable-fields.message")}
+        This note has no editable fields.
       </Typography>
     </Callout>
     <ModalContent>
@@ -87,8 +87,8 @@
         onSave(record);
       }}
       >{editableFields.length
-        ? $i18n.t("modals.note.edit.save")
-        : $i18n.t("modals.note.edit.confirm")}</Button
+        ? "Save"
+        : "Confirm"}</Button
     >
   </ModalButtonGroup>
 </ModalLayout>

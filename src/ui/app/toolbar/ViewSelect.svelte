@@ -2,7 +2,7 @@
   import { customViews } from "src/lib/stores/customViews";
   import type { ViewDefinition, ViewId } from "src/settings/settings";
   import { Icon, Button, IconButton } from "obsidian-svelte";
-  import { i18n } from "src/lib/stores/i18n";
+
   import {
     dndzone,
     TRIGGERS,
@@ -122,7 +122,7 @@
       onClick={() => {
         onViewAdd();
       }}
-      tooltip={$i18n.t("toolbar.view.add")}
+      tooltip="Add view"
     />
   </section>
 {:else}
@@ -133,7 +133,7 @@
     }}
   >
     <Icon name="plus" size="sm" />
-    {$i18n.t("toolbar.view.add")}
+    Add view
   </Button>
 {/if}
 

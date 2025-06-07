@@ -10,7 +10,6 @@ import type {
   ProjectId,
   ProjectsPluginPreferences,
 } from "src/settings/settings";
-import { i18n } from "src/lib/stores/i18n";
 import { GoogleCalendarAuthHandler } from "src/lib/googleCalendar/auth";
 
 /**
@@ -36,8 +35,8 @@ export class ProjectsSettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-      .setName(get(i18n).t("settings.general.size-limit.name"))
-      .setDesc(get(i18n).t("settings.general.size-limit.desc"))
+      .setName("Project size limit")
+      .setDesc("The maximum number of records to show in a project. Larger projects will be paginated.")
       .addText((text) =>
         text
           .setValue(preferences.projectSizeLimit.toString())
@@ -51,21 +50,15 @@ export class ProjectsSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName(get(i18n).t("settings.general.link-behavior.name"))
+      .setName("Link click behavior")
       .setDesc(
-        get(i18n).t("settings.general.link-behavior.desc", {
-          modifier: Platform.isMacOS ? "Cmd" : "Ctrl",
-        })
+        `Hold ${Platform.isMacOS ? "Cmd" : "Ctrl"} while clicking to open in the opposite mode.`
       )
       .addDropdown((dropdown) => {
         dropdown
           .addOptions({
-            "open-editor": get(i18n).t(
-              "settings.general.link-behavior.options.open-editor"
-            ),
-            "open-note": get(i18n).t(
-              "settings.general.link-behavior.options.open-note"
-            ),
+            "open-editor": "Open in editor",
+            "open-note": "Open as note",
           })
           .setValue(preferences.linkBehavior)
           .onChange((value) => {
@@ -77,20 +70,20 @@ export class ProjectsSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName(get(i18n).t("settings.general.start-of-week.name"))
+      .setName("Start of week")
       .addDropdown((dropdown) =>
         dropdown
           .addOption(
             "default",
-            get(i18n).t("settings.general.start-of-week.options.default")
+            "System default"
           )
           .addOption(
             "sunday",
-            get(i18n).t("settings.general.start-of-week.options.sunday")
+            "Sunday"
           )
           .addOption(
             "monday",
-            get(i18n).t("settings.general.start-of-week.options.monday")
+            "Monday"
           )
           .setValue(
             preferences.locale.firstDayOfWeek
@@ -108,22 +101,20 @@ export class ProjectsSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName(get(i18n).t("settings.front-matter.heading"))
+      .setName("Front matter")
       .setHeading();
 
     new Setting(containerEl)
-      .setName(get(i18n).t("settings.front-matter.quote-strings.name"))
+      .setName("Quote strings")
       .addDropdown((dropdown) =>
         dropdown
           .addOption(
             "PLAIN",
-            get(i18n).t("settings.front-matter.quote-strings.options.plain")
+            "Plain"
           )
           .addOption(
             "QUOTE_DOUBLE",
-            get(i18n).t(
-              "settings.front-matter.quote-strings.options.quote-double"
-            )
+            "Quote double"
           )
           .setValue(preferences.frontmatter.quoteStrings)
           .onChange((value) => {
@@ -332,8 +323,8 @@ export class ProjectsSettingTab extends PluginSettingTab {
     }
 
     new Setting(containerEl)
-      .setName(get(i18n).t("settings.commands.name"))
-      .setDesc(get(i18n).t("settings.commands.desc"))
+      .setName("Projects")
+      .setDesc("Manage your projects")
       .setHeading();
 
     const projectsManager = new Projects({
@@ -346,8 +337,8 @@ export class ProjectsSettingTab extends PluginSettingTab {
     });
 
     new Setting(containerEl)
-      .setName(get(i18n).t("settings.archives.name"))
-      .setDesc(get(i18n).t("settings.archives.desc"))
+      .setName("Archive")
+      .setDesc("Restore archived projects")
       .setHeading();
 
     const archivesManager = new Archives({

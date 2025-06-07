@@ -1,7 +1,5 @@
 import { App, Modal } from "obsidian";
-import { get } from "svelte/store";
 
-import { i18n } from "src/lib/stores/i18n";
 import { nextUniqueFieldName } from "src/lib/helpers";
 
 import CreateField from "./components/CreateField.svelte";
@@ -29,7 +27,7 @@ export class CreateFieldModal extends Modal {
         existingFields: this.fields,
         defaultName: nextUniqueFieldName(
           this.fields,
-          get(i18n).t("modals.field.create.untitled")
+          "Untitled Field"
         ),
         onCreate: (field: DataField, value: Optional<DataValue>) => {
           this.onCreate(field, value);

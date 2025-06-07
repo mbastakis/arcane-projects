@@ -3,7 +3,7 @@
   import type { FilterDefinition } from "src/settings/settings";
   import FilterOptions from "./FilterOptions.svelte";
   import PopoverButton from "../PopoverButton.svelte";
-  import { i18n } from "src/lib/stores/i18n";
+
 
   export let value: FilterDefinition | undefined;
   export let onChange: (value: FilterDefinition) => void;
@@ -13,7 +13,7 @@
 </script>
 
 <PopoverButton
-  label={$i18n.t("components.filter.label")}
+  label="Filter"
   icon="filter"
   count={value?.conditions.length ?? 0}
   {disabled}

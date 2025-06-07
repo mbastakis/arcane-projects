@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button, Icon } from "obsidian-svelte";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { TextInput, useClickOutside } from "obsidian-svelte";
 
   let editing: boolean = false;
@@ -10,12 +10,12 @@
     inputRef.select();
   }
 
-  let placeholder: string = $i18n.t("components.board.column.add.placeholder");
+  let placeholder: string = "Value";
   let value: string = "";
 
   export let fieldError: string = "";
   $: tooltip = fieldError
-    ? $i18n.t(`components.board.column.add.${fieldError}`)
+    ? (fieldError === "empty" ? "Empty" : fieldError === "exists" ? "Value already exists" : fieldError)
     : "";
 
   export let onColumnAdd: (name: string) => void;
@@ -61,7 +61,7 @@
     <span class="add-column">
       <Button variant="plain" disabled={!!fieldError} {tooltip}>
         <Icon name="plus" />
-        {$i18n.t("components.board.column.add.name")}
+        Add column
       </Button>
     </span>
   {/if}

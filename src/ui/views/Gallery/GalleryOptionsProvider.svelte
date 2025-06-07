@@ -1,7 +1,6 @@
 <script lang="ts">
   import { IconButton, Select } from "obsidian-svelte";
   import { DataFieldType, type DataField } from "src/lib/dataframe/dataframe";
-  import { i18n } from "src/lib/stores/i18n";
   import { Field } from "src/ui/components/Field";
   import {
     ViewContent,
@@ -53,12 +52,12 @@
   <ViewHeader>
     <ViewToolbar variant="secondary">
       <svelte:fragment slot="right">
-        <Field name={$i18n.t("views.gallery.fields.cover")}>
+        <Field name="Cover">
           <Select
             allowEmpty
             value={coverField?.name ?? ""}
             options={textFields.map(fieldToSelectableValue)}
-            placeholder={$i18n.t("views.gallery.fields.none") ?? ""}
+            placeholder="None"
             on:change={({ detail }) => handleCoverFieldChange(detail)}
           />
         </Field>
@@ -66,18 +65,18 @@
           value={config?.fitStyle ?? "cover"}
           options={[
             {
-              label: $i18n.t("views.gallery.fit-style.fill"),
+              label: "Fill image",
               value: "cover",
             },
             {
-              label: $i18n.t("views.gallery.fit-style.fit"),
+              label: "Fit image",
               value: "contain",
             },
           ]}
           on:change={({ detail }) => handleFitStyleChange(detail)}
         />
         <SwitchSelect
-          label={$i18n.t("views.gallery.include-fields")}
+          label="Include fields"
           items={fields.map((field) => ({
             label: field.name,
             icon: fieldIcon(field),

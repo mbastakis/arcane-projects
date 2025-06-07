@@ -2,7 +2,6 @@
   import { produce } from "immer";
   import { Button, Icon, IconButton, TextInput } from "obsidian-svelte";
   import { dndzone } from "svelte-dnd-action";
-  import { i18n } from "src/lib/stores/i18n";
 
   export let options: string[];
   export let onChange: (options: string[]) => void;
@@ -87,7 +86,7 @@
   </div>
   <Button variant="plain" on:click={handleOptionAdd}>
     <Icon name="plus" />
-    {$i18n.t("components.multi-text.add")}
+    Add an option
   </Button>
 </div>
 

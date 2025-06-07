@@ -7,7 +7,7 @@
     Typography,
   } from "obsidian-svelte";
 
-  import { i18n } from "src/lib/stores/i18n";
+
 
   export let title: string;
   export let message: string;
@@ -22,7 +22,7 @@
   </ModalContent>
   <ModalButtonGroup>
     <Button
-      variant={cta === $i18n.t("modals.confirm.delete")
+      variant={cta === "Delete"
         ? "destructive"
         : "primary"}
       on:click={() => {
@@ -34,7 +34,7 @@
         onCancel();
       }}
     >
-      {$i18n.t("modals.confirm.cancel")}
+      Cancel
     </Button>
   </ModalButtonGroup>
 </ModalLayout>

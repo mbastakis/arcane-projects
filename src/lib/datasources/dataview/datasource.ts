@@ -7,12 +7,10 @@ import {
   type DataRecord,
 } from "src/lib/dataframe/dataframe";
 import type { IFileSystem } from "src/lib/filesystem/filesystem";
-import { i18n } from "src/lib/stores/i18n";
 import type {
   ProjectDefinition,
   ProjectsPluginPreferences,
 } from "src/settings/settings";
-import { get } from "svelte/store";
 import { DataSource } from "..";
 import { parseRecords } from "../helpers";
 import { detectSchema } from "./schema";
@@ -21,7 +19,7 @@ import { standardizeValues } from "./standardize";
 export class UnsupportedCapability extends Error {
   constructor(message: string) {
     super(message);
-    this.name = get(i18n).t("errors.missingDataview.title");
+    this.name = "Dataview is disabled";
   }
 }
 

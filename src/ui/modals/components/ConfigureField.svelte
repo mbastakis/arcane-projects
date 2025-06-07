@@ -11,7 +11,7 @@
   } from "obsidian-svelte";
   import MultiTextInput from "src/ui/components/MultiTextInput/MultiTextInput.svelte";
   import { DataFieldType, type DataField } from "src/lib/dataframe/dataframe";
-  import { i18n } from "src/lib/stores/i18n";
+
 
   export let title: string;
   export let field: DataField;
@@ -22,11 +22,9 @@
   $: fieldNameError = validateFieldName(field.name);
 
   function validateFieldName(fieldName: string) {
-    if (fieldName.trim() === "") {
-      return $i18n.t("modals.field.configure.empty-name-error");
+    if (fieldName.trim() === "") {        return "Field name cannot be empty";
     }
-    if (existingFields.findIndex((field) => field.name === fieldName) !== -1)
-      return $i18n.t("modals.field.configure.existing-name-error");
+    if (existingFields.findIndex((field) => field.name === fieldName) !== -1)        return "Field name already exists";
     return "";
   }
 
@@ -75,17 +73,17 @@
   }
 
   $: options = [
-    { label: $i18n.t("data-types.string"), value: DataFieldType.String },
-    { label: $i18n.t("data-types.number"), value: DataFieldType.Number },
-    { label: $i18n.t("data-types.boolean"), value: DataFieldType.Boolean },
-    { label: $i18n.t("data-types.date"), value: DataFieldType.Date },
-    { label: $i18n.t("data-types.unknown"), value: DataFieldType.Unknown },
+    { label: "Text", value: DataFieldType.String },
+    { label: "Number", value: DataFieldType.Number },
+    { label: "Boolean", value: DataFieldType.Boolean },
+    { label: "Date", value: DataFieldType.Date },
+    { label: "Unknown", value: DataFieldType.Unknown },
   ];
 </script>
 
 <ModalLayout {title}>
   <ModalContent>
-    <SettingItem name={$i18n.t("modals.field.configure.name.name")}>
+    <SettingItem name="Name">
       <TextInput
         readonly={!editable}
         value={field.name}
@@ -95,8 +93,8 @@
       />
     </SettingItem>
     <SettingItem
-      name={$i18n.t("modals.field.configure.type.name")}
-      description={$i18n.t("modals.field.configure.type.description")}
+      name="Type"
+      description="Type of this field"
     >
       <Select
         disabled
@@ -107,8 +105,8 @@
     </SettingItem>
     {#if field.type === DataFieldType.String && !field.repeated && !field.identifier}
       <SettingItem
-        name={$i18n.t("modals.field.configure.options.name")}
-        description={$i18n.t("modals.field.configure.options.description")}
+        name="Options"
+        description="Enter a list of options"
         vertical
       >
         <MultiTextInput
@@ -117,8 +115,8 @@
         />
       </SettingItem>
       <SettingItem
-        name={$i18n.t("modals.field.configure.rich-text.name")}
-        description={$i18n.t("modals.field.configure.rich-text.description")}
+        name="Rich text"
+        description="Allow rich text in this field"
       >
         <Switch
           checked={field.typeConfig?.richText ?? false}
@@ -128,8 +126,8 @@
     {/if}
     {#if field.type === DataFieldType.String && field.repeated && !field.identifier}
       <SettingItem
-        name={$i18n.t("modals.field.configure.rich-text.name")}
-        description={$i18n.t("modals.field.configure.rich-text.description")}
+        name="Rich text"
+        description="Allow rich text in this field"
       >
         <Switch
           checked={field.typeConfig?.richText ?? false}
@@ -139,8 +137,8 @@
     {/if}
     {#if field.type === DataFieldType.Date && !field.repeated}
       <SettingItem
-        name={$i18n.t("modals.field.configure.time.name")}
-        description={$i18n.t("modals.field.configure.time.description")}
+        name="Include time"
+        description="Include time in this date field"
       >
         <Switch
           checked={field.typeConfig?.time ?? false}
@@ -167,7 +165,7 @@
         }
 
         onSave(field);
-      }}>{$i18n.t("modals.field.configure.save")}</Button
+      }}>Save</Button
     >
   </ModalButtonGroup>
 </ModalLayout>

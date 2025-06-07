@@ -3,7 +3,7 @@
 
   import { Field } from "src/ui/components/Field";
   import { SwitchSelect } from "../Table/components/SwitchSelect";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { fieldIcon, fieldToSelectableValue } from "../helpers";
   import { getFieldsByType } from "./board";
   import { DataFieldType, type DataField } from "src/lib/dataframe/dataframe";
@@ -59,26 +59,26 @@
 
     BoardOptions handles logic for updating fields used by the board.
 -->
-<Field name={$i18n.t("views.board.fields.status")}>
+<Field name="Status">
   <Select
     value={groupByField?.name ?? ""}
     on:change={handleStatusChange}
     options={validGroupByFields.map(fieldToSelectableValue)}
-    placeholder={$i18n.t("views.board.fields.none") ?? ""}
+    placeholder="None"
     allowEmpty
   />
 </Field>
-<Field name={$i18n.t("views.board.fields.check")}>
+<Field name="Check date">
   <Select
     allowEmpty
     value={booleanField?.name ?? ""}
     options={validBooleanFields.map(fieldToSelectableValue)}
-    placeholder={$i18n.t("views.board.fields.none") ?? ""}
+    placeholder="None"
     on:change={handleCheckFieldChange}
   />
 </Field>
 <SwitchSelect
-  label={$i18n.t("views.board.include-fields")}
+  label="Include fields"
   items={fields.map((field) => ({
     label: field.name,
     icon: fieldIcon(field),

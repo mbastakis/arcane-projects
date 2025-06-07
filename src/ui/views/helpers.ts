@@ -3,7 +3,6 @@ import { DataFieldType, type DataField } from "../../lib/dataframe/dataframe";
 import type { ViewProps } from "../app/useView";
 import { TFile, type Menu } from "obsidian";
 
-import { i18n } from "src/lib/stores/i18n";
 import { app } from "src/lib/stores/obsidian";
 import { get } from "svelte/store";
 import { VIEW_TYPE_PROJECTS } from "src/view";
@@ -37,23 +36,23 @@ export function fieldDisplayText(field: DataField): string {
       if (field.repeated) {
         switch (field.name) {
           case "tags":
-            return get(i18n).t("data-types.tags");
+            return "Tags";
           case "aliases":
-            return get(i18n).t("data-types.aliases");
+            return "Aliases";
         }
-        return get(i18n).t("data-types.list");
+        return "List";
       }
-      return get(i18n).t("data-types.string");
+      return "Text";
     case DataFieldType.Number:
-      return get(i18n).t("data-types.number");
+      return "Number";
     case DataFieldType.Boolean:
-      return get(i18n).t("data-types.boolean");
+      return "Checkbox";
     case DataFieldType.Date:
       return field.typeConfig?.time
-        ? get(i18n).t("data-types.datetime")
-        : get(i18n).t("data-types.date");
+        ? "Date & time"
+        : "Date";
   }
-  return get(i18n).t("data-types.unknown");
+  return "Unknown";
 }
 
 export function fieldToSelectableValue(field: DataField): {

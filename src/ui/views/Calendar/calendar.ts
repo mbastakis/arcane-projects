@@ -1,8 +1,6 @@
 import dayjs from "dayjs";
-import { get } from "svelte/store";
 
 import { isDate, type DataRecord } from "src/lib/dataframe/dataframe";
-import { i18n } from "src/lib/stores/i18n";
 import type { FirstDayOfWeek } from "src/settings/settings";
 import moment from "moment";
 
@@ -111,39 +109,14 @@ export function computeDateInterval(
 
 export function generateTitle(dateInterval: [dayjs.Dayjs, dayjs.Dayjs]) {
   if (dateInterval[0].startOf("day").isSame(dateInterval[1].startOf("day"))) {
-    return get(i18n).t("views.calendar.date", {
-      value: dateInterval[0],
-      formatParams: {
-        value: { year: "numeric", month: "long", day: "numeric" },
-      },
-    });
+    return dateInterval[0].format("MMMM D, YYYY");
   }
 
   if (dateInterval[0].startOf("year").isSame(dateInterval[1].startOf("year"))) {
-    return get(i18n).t("views.calendar.interval", {
-      from: dateInterval[0],
-      to: dateInterval[1],
-      en_separator: ", ",
-      custom_year: dateInterval[0],
-      formatParams: {
-        from: { month: "short", day: "numeric" },
-        to: { month: "short", day: "numeric" },
-        custom_year: { year: "numeric" },
-      },
-    });
+    return `${dateInterval[0].format("MMM D")} - ${dateInterval[1].format("MMM D")}, ${dateInterval[0].format("YYYY")}`;
   }
 
-  return get(i18n).t("views.calendar.interval", {
-    from: dateInterval[0],
-    to: dateInterval[1],
-    en_separator: "",
-    custom_year: "",
-    formatParams: {
-      from: { year: "numeric", month: "short", day: "numeric" },
-      to: { year: "numeric", month: "short", day: "numeric" },
-      custom_year: { year: false },
-    },
-  });
+  return `${dateInterval[0].format("MMM D, YYYY")} - ${dateInterval[1].format("MMM D, YYYY")}`;
 }
 
 export function generateDates(

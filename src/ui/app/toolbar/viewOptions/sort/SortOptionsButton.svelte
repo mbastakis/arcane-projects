@@ -3,7 +3,7 @@
   import type { SortDefinition } from "src/settings/settings";
   import SortOptions from "./SortOptions.svelte";
   import PopoverButton from "../PopoverButton.svelte";
-  import { i18n } from "src/lib/stores/i18n";
+
 
   export let value: SortDefinition | undefined;
   export let onChange: (value: SortDefinition) => void;
@@ -13,7 +13,7 @@
 </script>
 
 <PopoverButton
-  label={$i18n.t("components.sort.label")}
+  label="Sort"
   icon="sort-desc"
   count={value?.criteria.length ?? 0}
   {disabled}

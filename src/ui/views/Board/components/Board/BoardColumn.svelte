@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button, Icon } from "obsidian-svelte";
   import type { DataField, DataRecord } from "src/lib/dataframe/dataframe";
-  import { i18n } from "src/lib/stores/i18n";
+
   import CardGroup from "./CardList.svelte";
   import ColumnHeader from "./ColumnHeader.svelte";
   import type {
@@ -50,7 +50,7 @@
 
     menu.addItem((item) => {
       item
-        .setTitle($i18n.t("components.board.column.rename"))
+        .setTitle("Rename column")
         .setIcon("edit")
         .onClick(() => {
           editing = true;
@@ -61,8 +61,8 @@
       item
         .setTitle(
           collapse
-            ? $i18n.t("components.board.column.expand")
-            : $i18n.t("components.board.column.collapse")
+            ? "Expand column"
+            : "Collapse column"
         )
         .setIcon(collapse ? "chevrons-left-right" : "chevrons-right-left")
         .onClick(() => {
@@ -74,8 +74,8 @@
       item
         .setTitle(
           pinned
-            ? $i18n.t("components.board.column.unpin")
-            : $i18n.t("components.board.column.pin")
+            ? "Unpin column"
+            : "Pin column"
         )
         .setIcon(pinned ? "pin-off" : "pin")
         .onClick(() => {
@@ -83,12 +83,12 @@
         });
     });
 
-    if (name !== $i18n.t("views.board.no-status")) {
+    if (name !== "No status") {
       menu.addSeparator();
 
       menu.addItem((item) => {
         item
-          .setTitle($i18n.t("components.board.column.delete"))
+          .setTitle("Delete column")
           .setIcon("trash-2")
           .setWarning(true)
           .onClick(() => {
@@ -137,7 +137,7 @@
       <span>
         <Button variant="plain" on:click={() => onRecordAdd()}>
           <Icon name="plus" />
-          {$i18n.t("views.board.note.add")}
+          Add note
         </Button>
       </span>
     {/if}

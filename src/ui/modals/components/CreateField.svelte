@@ -21,7 +21,7 @@
     type DataField,
     type DataValue,
   } from "src/lib/dataframe/dataframe";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { onMount } from "svelte";
   import DateInput from "src/ui/components/DateInput.svelte";
   import DatetimeInput from "src/ui/components/DatetimeInput.svelte";
@@ -48,11 +48,11 @@
 
   function validateFieldName(fieldName: string) {
     if (fieldName.trim() === "") {
-      return $i18n.t("modals.field.create.empty-name-error");
+      return "Field name cannot be empty";
     }
 
     if (existingFields.findIndex((field) => field.name === fieldName) !== -1) {
-      return $i18n.t("modals.field.create.existing-name-error");
+      return "Field name already exists";
     }
 
     return "";
@@ -188,11 +188,11 @@
   }
 
   const options = [
-    { label: $i18n.t("data-types.string"), value: DataFieldType.String },
-    { label: $i18n.t("data-types.number"), value: DataFieldType.Number },
-    { label: $i18n.t("data-types.boolean"), value: DataFieldType.Boolean },
-    { label: $i18n.t("data-types.date"), value: DataFieldType.Date },
-    { label: $i18n.t("data-types.list"), value: DataFieldType.List },
+    { label: "Text", value: DataFieldType.String },
+    { label: "Number", value: DataFieldType.Number },
+    { label: "Boolean", value: DataFieldType.Boolean },
+    { label: "Date", value: DataFieldType.Date },
+    { label: "List", value: DataFieldType.List },
   ];
 
   onMount(() => {
@@ -200,11 +200,11 @@
   });
 </script>
 
-<ModalLayout title={$i18n.t("modals.field.create.title")}>
+<ModalLayout title="Create field">
   <ModalContent>
     <SettingItem
-      name={$i18n.t("modals.field.create.name.name")}
-      description={$i18n.t("modals.field.create.name.description") ?? ""}
+      name="Name"
+      description=""
     >
       <TextInput
         bind:ref={inputRef}
@@ -223,15 +223,15 @@
     </SettingItem>
 
     <SettingItem
-      name={$i18n.t("modals.field.create.type.name")}
-      description={$i18n.t("modals.field.create.type.description")}
+      name="Type"
+      description="Type of this field"
     >
       <Select value={field.type} {options} on:change={handleTypeChange} />
     </SettingItem>
 
     <SettingItem
-      name={$i18n.t("modals.field.create.default.name")}
-      description={$i18n.t("modals.field.create.default.description")}
+      name="Default value"
+      description="Default value for this field"
     >
       {#if field.type === DataFieldType.List}
         <TagsInput
@@ -290,8 +290,8 @@
     </SettingItem>
     {#if !field.repeated && field.type === DataFieldType.String}
       <SettingItem
-        name={$i18n.t("modals.field.create.options.name")}
-        description={$i18n.t("modals.field.create.options.description")}
+        name="Options"
+        description="Enter a list of options"
         vertical
       >
         <MultiTextInput
@@ -300,8 +300,8 @@
         />
       </SettingItem>
       <SettingItem
-        name={$i18n.t("modals.field.configure.rich-text.name")}
-        description={$i18n.t("modals.field.configure.rich-text.description")}
+        name="Rich text"
+        description="Allow rich text in this field"
       >
         <Switch
           checked={field.typeConfig?.richText ?? false}
@@ -311,8 +311,8 @@
     {/if}
     {#if !field.repeated && field.type === DataFieldType.Date}
       <SettingItem
-        name={$i18n.t("modals.field.configure.time.name")}
-        description={$i18n.t("modals.field.configure.time.description")}
+        name="Include time"
+        description="Include time in this date field"
       >
         <Switch
           checked={field.typeConfig?.time ?? false}
@@ -357,7 +357,7 @@
         }
       }}
     >
-      {$i18n.t("modals.field.create.create")}
+      Create field
     </Button>
   </ModalButtonGroup>
 </ModalLayout>

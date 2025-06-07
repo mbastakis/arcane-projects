@@ -3,7 +3,6 @@
   import { Menu, Notice } from "obsidian";
   import { IconButton, Select } from "obsidian-svelte";
 
-  import { i18n } from "src/lib/stores/i18n";
   import { app } from "src/lib/stores/obsidian";
   import { settings } from "src/lib/stores/settings";
   import { ConfirmDialogModal } from "src/ui/modals/confirmDialog";
@@ -35,27 +34,27 @@
       }
     )}
     on:change={({ detail: value }) => onProjectChange(value)}
-    placeholder={$i18n.t("toolbar.projects.none") ?? ""}
+    placeholder="No projects"
   />
 
   <IconButton
     icon="more-vertical"
     size="sm"
     disabled={!projects.length}
-    tooltip={$i18n.t("toolbar.projects.options")}
+    tooltip="More options"
     onClick={(event) => {
       const menu = new Menu();
 
       menu.addItem((item) => {
         item
-          .setTitle($i18n.t("modals.project.edit.short-title"))
+          .setTitle("Edit project")
           .setIcon("edit")
           .onClick(() => {
             if (project) {
               new CreateProjectModal(
                 $app,
-                $i18n.t("modals.project.edit.title"),
-                $i18n.t("modals.project.edit.cta"),
+                "Edit project",
+                "Update",
                 settings.updateProject,
                 project
               ).open();
@@ -65,7 +64,7 @@
 
       menu.addItem((item) => {
         item
-          .setTitle($i18n.t("modals.project.duplicate.title"))
+          .setTitle("Duplicate project")
           .setIcon("copy")
           .onClick(() => {
             if (projectId) {
@@ -77,20 +76,18 @@
 
       menu.addItem((item) => {
         item
-          .setTitle($i18n.t("modals.project.archive.short-title"))
+          .setTitle("Archive project")
           .setIcon("archive")
           .onClick(() => {
             new ConfirmDialogModal(
               $app,
-              $i18n.t("modals.project.archive.title"),
-              $i18n.t("modals.project.archive.message", {
-                project: project?.name ?? "",
-              }),
-              $i18n.t("modals.project.archive.cta"),
+              "Archive project",
+              `Are you sure you want to archive "${project?.name ?? ""}"?`,
+              "Archive",
               () => {
                 if (projectId) {
                   if ($settings.archives.length === 0) {
-                    new Notice($i18n.t("modals.project.archive.notice"), 15000);
+                    new Notice("You can access archived projects from the settings.", 15000);
                   }
                   settings.archiveProject(projectId);
                 }
@@ -101,17 +98,15 @@
 
       menu.addItem((item) => {
         item
-          .setTitle($i18n.t("modals.project.delete.short-title"))
+          .setTitle("Delete project")
           .setIcon("trash")
           .setWarning(true)
           .onClick(() => {
             new ConfirmDialogModal(
               $app,
-              $i18n.t("modals.project.delete.title"),
-              $i18n.t("modals.project.delete.message", {
-                project: project?.name ?? "",
-              }),
-              $i18n.t("modals.project.delete.cta"),
+              "Delete project",
+              `Are you sure you want to delete "${project?.name ?? ""}"? This action cannot be undone.`,
+              "Delete",
               () => {
                 if (projectId) {
                   settings.deleteProject(projectId);
@@ -127,12 +122,12 @@
   <IconButton
     icon="folder-plus"
     size="md"
-    tooltip={$i18n.t("modals.project.create.title")}
+    tooltip="Create project"
     onClick={() => onProjectAdd()}
   />
   {#if project?.dataSource.kind === "dataview"}
-    <Flair variant="primary" tooltip={$i18n.t("toolbar.read-only-desc") ?? ""}
-      >{$i18n.t("toolbar.read-only")}</Flair
+    <Flair variant="primary" tooltip="This project is based on a Dataview query and cannot be edited."
+      >Read only</Flair
     >
   {/if}
 </span>

@@ -13,7 +13,7 @@
     setOrder,
   } from "./helpers";
   import { fieldsToSelectOptions } from "../helpers";
-  import { i18n } from "src/lib/stores/i18n";
+
 
   export let value: SortDefinition;
   export let onChange: (value: SortDefinition) => void;
@@ -77,7 +77,7 @@
   {/each}
   <HorizontalGroup>
     <Button variant="plain" on:click={handleConditionAdd}
-      ><Icon name="plus" />{$i18n.t("components.sort.add")}</Button
+      ><Icon name="plus" />Add sort</Button
     >
   </HorizontalGroup>
 </div>

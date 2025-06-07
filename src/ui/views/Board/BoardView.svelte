@@ -8,7 +8,7 @@
   } from "src/lib/dataframe/dataframe";
   import { updateRecordValues } from "src/lib/datasources/helpers";
   import { notUndefined } from "src/lib/helpers";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import type { ViewApi } from "src/lib/viewApi";
   import type { ProjectDefinition } from "src/settings/settings";
@@ -100,7 +100,7 @@
       if (trigger === "addToColumn" && groupByField?.name) {
         record = updateRecordValues(record, {
           [groupByField.name]:
-            column === $i18n.t("views.board.no-status") ? null : column,
+            column === "No status" ? null : column,
         });
       }
 
@@ -225,7 +225,7 @@
             field
               ? {
                   [field.name]:
-                    column !== $i18n.t("views.board.no-status")
+                    column !== "No status"
                       ? column
                       : undefined,
                 }

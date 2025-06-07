@@ -11,7 +11,7 @@
   } from "obsidian-svelte";
 
   import { isValidPath } from "src/lib/obsidian";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { settings } from "src/lib/stores/settings";
   import type { ProjectDefinition } from "src/settings/settings";
@@ -45,7 +45,7 @@
 
   function validateName(name: string) {
     if (name.trim() === "") {
-      return $i18n.t("modals.note.create.empty-name-error");
+      return "Name can't be empty.";
     }
 
     const existingFile = $app.vault.getAbstractFileByPath(
@@ -53,15 +53,15 @@
     );
 
     if (existingFile instanceof TFile) {
-      return $i18n.t("modals.note.create.name-taken-error");
+      return "A note with that name already exists.";
     }
 
     if (!isValidPath(name)) {
-      return $i18n.t("modals.project.defaultName.invalid");
+      return "Contains illegal characters.";
     }
 
     if (name.startsWith(".")) {
-      return $i18n.t("modals.note.create.dot-start-error");
+      return "File name must not start with a dot.";
     }
 
     return "";
@@ -72,11 +72,11 @@
   });
 </script>
 
-<ModalLayout title={$i18n.t("modals.note.create.title")}>
+<ModalLayout title="Create new note">
   <ModalContent>
     <SettingItem
-      name={$i18n.t("modals.note.create.name.name")}
-      description={$i18n.t("modals.note.create.name.description") ?? ""}
+      name="Name"
+      description=""
     >
       <TextInput
         bind:ref={inputRef}
@@ -95,8 +95,8 @@
     </SettingItem>
 
     <SettingItem
-      name={$i18n.t("modals.note.create.project.name")}
-      description={$i18n.t("modals.note.create.project.description") ?? ""}
+      name="Project"
+      description=""
     >
       <Select
         value={project.id}
@@ -115,9 +115,8 @@
 
     {#if project.templates.length}
       <SettingItem
-        name={$i18n.t("modals.note.create.templatePath.name")}
-        description={$i18n.t("modals.note.create.templatePath.description") ??
-          ""}
+        name="Template"
+        description=""
       >
         <Select
           value={templatePath}
@@ -126,7 +125,7 @@
             label: path,
             value: path,
           }))}
-          placeholder={$i18n.t("modals.note.create.templatePath.none") ?? ""}
+          placeholder="None"
           allowEmpty
         />
       </SettingItem>
@@ -140,7 +139,7 @@
         onSave(name, templatePath, project);
       }}
     >
-      {$i18n.t("modals.note.create.create")}
+      Create note
     </Button>
   </ModalButtonGroup>
 </ModalLayout>

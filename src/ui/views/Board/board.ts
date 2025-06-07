@@ -1,5 +1,3 @@
-import { get } from "svelte/store";
-
 import {
   DataFieldType,
   isNumber,
@@ -8,7 +6,6 @@ import {
   type DataRecord,
 } from "src/lib/dataframe/dataframe";
 import { notEmpty } from "src/lib/helpers";
-import { i18n } from "src/lib/stores/i18n";
 import type { ColumnSettings } from "./types";
 
 export function getFieldByName(
@@ -65,7 +62,7 @@ export function getColumns(
       } else if (aweight > bweight) {
         return 1;
       } else {
-        const noStatus = get(i18n).t("views.board.no-status");
+        const noStatus = "No status";
         if (a === noStatus) return -1;
         if (b === noStatus) return 1;
 
@@ -96,7 +93,7 @@ function groupRecordsByField(
   records: DataRecord[],
   fieldName: string | undefined
 ): Record<string, Array<DataRecord>> {
-  const noStatus = get(i18n).t("views.board.no-status");
+  const noStatus = "No status";
 
   if (!fieldName) {
     return { [noStatus]: [...records] };

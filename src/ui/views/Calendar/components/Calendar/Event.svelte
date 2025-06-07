@@ -5,7 +5,6 @@
   import ColorPill from "./ColorPill.svelte";
   import Ellipsis from "./Ellipsis.svelte";
   import { menuOnContextMenu } from "src/ui/views/helpers";
-  import { i18n } from "src/lib/stores/i18n";
 
   /**
    * Specifies an optional color of the calendar event.
@@ -40,7 +39,7 @@
     
     const menu = new Menu().addItem((item) => {
       item
-        .setTitle($i18n.t("views.calendar.delete-event") || "Delete event")
+        .setTitle("Delete event")
         .setIcon("trash")
         .onClick(() => {
           dispatch('delete');

@@ -3,7 +3,7 @@
 
   import { createProject } from "src/lib/dataApi";
   import { api } from "src/lib/stores/api";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { settings } from "src/lib/stores/settings";
   import { ViewApi } from "src/lib/viewApi";
@@ -54,8 +54,8 @@
         () => {
           new CreateProjectModal(
             $app,
-            $i18n.t("modals.project.create.title"),
-            $i18n.t("modals.project.create.cta"),
+            "Create project",
+            "Create",
             settings.addProject,
             createProject()
           ).open();

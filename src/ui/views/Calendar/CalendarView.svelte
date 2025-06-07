@@ -10,7 +10,7 @@
   } from "src/lib/dataframe/dataframe";
   import type { VirtualEventInstance } from "src/lib/googleCalendar/types";
   import { updateRecordValues } from "src/lib/datasources/helpers";
-  import { i18n } from "src/lib/stores/i18n";
+
   import { app } from "src/lib/stores/obsidian";
   import { settings } from "src/lib/stores/settings";
   import type { ViewApi } from "src/lib/viewApi";
@@ -253,20 +253,20 @@
       />
       <Typography slot="middle" variant="h2" nomargin>{title}</Typography>
       <svelte:fragment slot="right">
-        <Field name={$i18n.t("views.calendar.fields.date")}>
+        <Field name="Date">
           <Select
             value={dateField?.name ?? ""}
             options={dateFields.map(fieldToSelectableValue)}
-            placeholder={$i18n.t("views.calendar.fields.none") ?? ""}
+            placeholder="None"
             on:change={({ detail }) => handleDateFieldChange(detail)}
           />
         </Field>
-        <Field name={$i18n.t("views.calendar.fields.check")}>
+        <Field name="Check date">
           <Select
             allowEmpty
             value={booleanField?.name ?? ""}
             options={booleanFields.map(fieldToSelectableValue)}
-            placeholder={$i18n.t("views.calendar.fields.none") ?? ""}
+            placeholder="None"
             on:change={({ detail }) => handleCheckFieldChange(detail)}
           />
         </Field>
@@ -274,33 +274,23 @@
           value={config?.interval ?? "week"}
           options={[
             {
-              label: $i18n.t("views.calendar.intervals.month", {
-                count: 1,
-              }),
+              label: "Month",
               value: "month",
             },
             {
-              label: $i18n.t("views.calendar.intervals.weekWithCount", {
-                count: 2,
-              }),
+              label: "2 weeks",
               value: "2weeks",
             },
             {
-              label: $i18n.t("views.calendar.intervals.week", {
-                count: 1,
-              }),
+              label: "Week",
               value: "week",
             },
             {
-              label: $i18n.t("views.calendar.intervals.dayWithCount", {
-                count: 3,
-              }),
+              label: "3 days",
               value: "3days",
             },
             {
-              label: $i18n.t("views.calendar.intervals.day", {
-                count: 1,
-              }),
+              label: "Day",
               value: "day",
             },
           ]}
@@ -320,12 +310,7 @@
             width={100 / weekDays.length}
             weekend={weekDay.day() === 0 || weekDay.day() === 6}
           >
-            {$i18n.t("views.calendar.weekday", {
-              value: weekDay.toDate(),
-              formatParams: {
-                value: { weekday: "short" },
-              },
-            })}
+            {weekDay.format("ddd")}
           </Weekday>
         {/each}
       </WeekHeader>

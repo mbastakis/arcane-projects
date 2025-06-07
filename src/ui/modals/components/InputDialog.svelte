@@ -6,7 +6,7 @@
     ModalLayout,
   } from "obsidian-svelte";
 
-  import { i18n } from "src/lib/stores/i18n";
+
 
   export let value: string;
   export let message: string;
@@ -36,7 +36,7 @@
     <Button
       on:click={() => {
         onCancel();
-      }}>{$i18n.t("modals.input.cancel")}</Button
+      }}>Cancel</Button
     >
   </ModalButtonGroup>
 </ModalLayout>
