@@ -89,23 +89,6 @@ const v1demo: v1.ProjectsPluginSettings<
           id: "1f1b74a7-ab7b-4fb5-8a18-0cb18f997aa7",
           type: "calendar",
         },
-        {
-          config: {
-            coverField: "image",
-          },
-          filter: {
-            conditions: [],
-          },
-          colors: {
-            conditions: [],
-          },
-          sort: {
-            criteria: [],
-          },
-          name: "Gallery",
-          id: "64713d5a-683d-4f19-9cf9-d90dde311fc8",
-          type: "gallery",
-        },
       ],
     },
   ],
@@ -210,23 +193,6 @@ const v2demo: v2.ProjectsPluginSettings<
           name: "Calendar",
           id: "1f1b74a7-ab7b-4fb5-8a18-0cb18f997aa7",
           type: "calendar",
-        },
-        {
-          config: {
-            coverField: "image",
-          },
-          filter: {
-            conditions: [],
-          },
-          colors: {
-            conditions: [],
-          },
-          sort: {
-            criteria: [],
-          },
-          name: "Gallery",
-          id: "64713d5a-683d-4f19-9cf9-d90dde311fc8",
-          type: "gallery",
         },
       ],
       name: "Demo project",

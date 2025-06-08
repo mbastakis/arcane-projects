@@ -12,7 +12,6 @@ import { view } from "src/lib/stores/obsidian";
 import { BoardView } from "src/ui/views/Board";
 import { CalendarView } from "src/ui/views/Calendar";
 // import { DeveloperView } from "src/views/Developer";
-import { GalleryView } from "src/ui/views/Gallery";
 import { TableView } from "src/ui/views/Table";
 
 import type { ProjectView } from "./customViewApi";
@@ -131,7 +130,6 @@ export class ProjectsView extends ItemView {
     views["table"] = new TableView();
     views["board"] = new BoardView();
     views["calendar"] = new CalendarView();
-    views["gallery"] = new GalleryView();
     // views["developer"] = new DeveloperView();
 
     return views;

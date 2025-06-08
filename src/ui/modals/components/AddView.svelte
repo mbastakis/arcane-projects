@@ -30,13 +30,12 @@
 
   const options = Object.values($customViews).map((view) => {
     if (
-      ["table", "board", "calendar", "gallery"].includes(view.getViewType()) // Maybe we need a enum of integrated view types here
+      ["table", "board", "calendar"].includes(view.getViewType()) // Maybe we need a enum of integrated view types here
     ) {
       const viewTypeNames = {
         table: "Table",
         board: "Board", 
-        calendar: "Calendar",
-        gallery: "Gallery"
+        calendar: "Calendar"
       };
       return {
         label: viewTypeNames[view.getViewType()] || view.getViewType(),

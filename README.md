@@ -13,7 +13,7 @@
 Projects is a plugin for [Obsidian](https://obsidian.md) that lets you manage and visualize notes for project management.
 
 - Create projects from folders and Dataview queries.
-- Switch between four different views: _Table_, _Board_, _Calendar_, and _Gallery_.
+- Switch between three different views: _Table_, _Board_, and _Calendar_.
 - Configure note templates for each project.
 
 For example, if you're a content manager, Projects can help you manage your content calendar. Create drafts, keep track of their status, and when they are scheduled to be published.

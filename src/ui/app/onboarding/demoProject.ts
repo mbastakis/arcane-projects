@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 import { settings } from "src/lib/stores/settings";
 import type { BoardConfig } from "src/ui/views/Board/types";
 import type { CalendarConfig } from "src/ui/views/Calendar/types";
-import type { GalleryConfig } from "src/ui/views/Gallery/types";
 import type { TableConfig } from "src/ui/views/Table/types";
 import { DEFAULT_PROJECT, DEFAULT_VIEW } from "src/settings/settings";
 
@@ -93,10 +92,6 @@ export async function createDemoProject(vault: Vault) {
     checkField: "published",
   };
 
-  const galleryConfig: GalleryConfig = {
-    coverField: "image",
-  };
-
   settings.addProject(
     Object.assign({}, DEFAULT_PROJECT, {
       name: "Demo project",
@@ -127,12 +122,6 @@ export async function createDemoProject(vault: Vault) {
           id: uuidv4(),
           type: "calendar",
           config: calendarConfig,
-        }),
-        Object.assign({}, DEFAULT_VIEW, {
-          name: "Gallery",
-          id: uuidv4(),
-          type: "gallery",
-          config: galleryConfig,
         }),
       ],
     })
