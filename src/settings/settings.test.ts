@@ -109,6 +109,9 @@ const v1demo: v1.ProjectsPluginSettings<
       calendarId: "",
       autoSyncInterval: 15,
     },
+    toolbar: {
+      projectOptionsCollapsed: true,
+    },
   },
 };
 
@@ -216,6 +219,9 @@ const v2demo: v2.ProjectsPluginSettings<
       clientSecret: "",
       calendarId: "",
       autoSyncInterval: 15,
+    },
+    toolbar: {
+      projectOptionsCollapsed: true,
     },
   },
 };

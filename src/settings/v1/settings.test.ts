@@ -18,6 +18,16 @@ describe("resolve v2", () => {
         projectSizeLimit: 1000,
         commands: [],
         linkBehavior: "open-editor",
+        googleCalendar: {
+          enabled: false,
+          clientId: "",
+          clientSecret: "",
+          calendarId: "",
+          autoSyncInterval: 15,
+        },
+        toolbar: {
+          projectOptionsCollapsed: true,
+        },
       },
     });
   });
@@ -53,6 +63,16 @@ describe("resolve v2", () => {
         projectSizeLimit: 1000,
         commands: [],
         linkBehavior: "open-editor",
+        googleCalendar: {
+          enabled: false,
+          clientId: "",
+          clientSecret: "",
+          calendarId: "",
+          autoSyncInterval: 15,
+        },
+        toolbar: {
+          projectOptionsCollapsed: true,
+        },
       },
     });
   });

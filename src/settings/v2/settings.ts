@@ -99,6 +99,9 @@ export const DEFAULT_SETTINGS: ProjectsPluginSettings<
       redirectUri: "http://localhost:8080/auth/callback", // Default redirect URI for Desktop apps
       autoSyncInterval: 15, // 15 minutes
     },
+    toolbar: {
+      projectOptionsCollapsed: true, // Default to folded state
+    },
   },
 };
 
@@ -187,6 +190,9 @@ export const DEFAULT_PREFERENCES: ProjectsPluginPreferences = {
     clientSecret: "",
     redirectUri: "", // Optional: defaults to localhost for web clients
     autoSyncInterval: 15, // 15 minutes
+  },
+  toolbar: {
+    projectOptionsCollapsed: true, // Default to folded state
   },
 };
 

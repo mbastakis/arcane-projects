@@ -20,6 +20,7 @@
   } from "src/settings/settings";
   import { produce } from "immer";
   import ProjectViewOptions from "./viewOptions/ProjectViewOptions.svelte";
+  import { IconButton } from "obsidian-svelte";
 
   export let projects: ProjectDefinition[];
 
@@ -37,6 +38,17 @@
   $: view = projects
     .find((project) => project.id === projectId)
     ?.views?.find((view) => view.id === viewId);
+
+  $: projectOptionsCollapsed = $settings.preferences.toolbar.projectOptionsCollapsed;
+
+  function toggleProjectOptions() {
+    settings.updatePreferences({
+      ...$settings.preferences,
+      toolbar: {
+        projectOptionsCollapsed: !projectOptionsCollapsed,
+      },
+    });
+  }
 </script>
 
 <!--
@@ -125,7 +137,13 @@
     {/if}
   </div>
   <svelte:fragment slot="right">
-    {#if view}
+    <IconButton
+      icon={projectOptionsCollapsed ? "chevron-right" : "chevron-down"}
+      size="sm"
+      tooltip={projectOptionsCollapsed ? "Show project options" : "Hide project options"}
+      onClick={toggleProjectOptions}
+    />
+    {#if view && !projectOptionsCollapsed}
       <ProjectViewOptions
         {view}
         fields={$dataFrame.fields}

@@ -59,6 +59,9 @@
   export let config: CalendarConfig | undefined;
   export let onConfigChange: (cfg: CalendarConfig) => void;
 
+  // Access the folding state from settings
+  $: projectOptionsCollapsed = $settings.preferences.toolbar.projectOptionsCollapsed;
+
   // Google Calendar sync manager
   let syncManager: GoogleCalendarSyncManager | null = null;
 
@@ -244,60 +247,62 @@
 
 <ViewLayout>
   <ViewHeader>
-    <ViewToolbar variant="secondary">
-      <Navigation
-        slot="left"
-        onNext={() => (anchorDate = addInterval(anchorDate, interval))}
-        onPrevious={() => (anchorDate = subtractInterval(anchorDate, interval))}
-        onToday={() => (anchorDate = dayjs())}
-      />
-      <Typography slot="middle" variant="h2" nomargin>{title}</Typography>
-      <svelte:fragment slot="right">
-        <Field name="Date">
-          <Select
-            value={dateField?.name ?? ""}
-            options={dateFields.map(fieldToSelectableValue)}
-            placeholder="None"
-            on:change={({ detail }) => handleDateFieldChange(detail)}
-          />
-        </Field>
-        <Field name="Check date">
-          <Select
-            allowEmpty
-            value={booleanField?.name ?? ""}
-            options={booleanFields.map(fieldToSelectableValue)}
-            placeholder="None"
-            on:change={({ detail }) => handleCheckFieldChange(detail)}
-          />
-        </Field>
-        <Select
-          value={config?.interval ?? "week"}
-          options={[
-            {
-              label: "Month",
-              value: "month",
-            },
-            {
-              label: "2 weeks",
-              value: "2weeks",
-            },
-            {
-              label: "Week",
-              value: "week",
-            },
-            {
-              label: "3 days",
-              value: "3days",
-            },
-            {
-              label: "Day",
-              value: "day",
-            },
-          ]}
-          on:change={({ detail }) => handleIntervalChange(detail)}
+    {#if !projectOptionsCollapsed}
+      <ViewToolbar variant="secondary">
+        <Navigation
+          slot="left"
+          onNext={() => (anchorDate = addInterval(anchorDate, interval))}
+          onPrevious={() => (anchorDate = subtractInterval(anchorDate, interval))}
+          onToday={() => (anchorDate = dayjs())}
         />
-      </svelte:fragment>
-    </ViewToolbar>
+        <Typography slot="middle" variant="h2" nomargin>{title}</Typography>
+        <svelte:fragment slot="right">
+          <Field name="Date">
+            <Select
+              value={dateField?.name ?? ""}
+              options={dateFields.map(fieldToSelectableValue)}
+              placeholder="None"
+              on:change={({ detail }) => handleDateFieldChange(detail)}
+            />
+          </Field>
+          <Field name="Check date">
+            <Select
+              allowEmpty
+              value={booleanField?.name ?? ""}
+              options={booleanFields.map(fieldToSelectableValue)}
+              placeholder="None"
+              on:change={({ detail }) => handleCheckFieldChange(detail)}
+            />
+          </Field>
+          <Select
+            value={config?.interval ?? "week"}
+            options={[
+              {
+                label: "Month",
+                value: "month",
+              },
+              {
+                label: "2 weeks",
+                value: "2weeks",
+              },
+              {
+                label: "Week",
+                value: "week",
+              },
+              {
+                label: "3 days",
+                value: "3days",
+              },
+              {
+                label: "Day",
+                value: "day",
+              },
+            ]}
+            on:change={({ detail }) => handleIntervalChange(detail)}
+          />
+        </svelte:fragment>
+      </ViewToolbar>
+    {/if}
     
     <!-- Google Calendar Sync Status -->
     <GoogleCalendarSync {syncManager} />

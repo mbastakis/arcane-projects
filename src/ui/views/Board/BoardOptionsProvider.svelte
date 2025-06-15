@@ -10,6 +10,7 @@
   import type { DataField, DataFrame } from "src/lib/dataframe/dataframe";
   import { BoardSettingsModal } from "./settings/settingsModal";
   import { app } from "src/lib/stores/obsidian";
+  import { settings } from "src/lib/stores/settings";
 
   export let config: BoardConfig;
   export let onConfigChange: (cfg: BoardConfig) => void;
@@ -19,6 +20,9 @@
   $: ({ fields } = frame);
 
   $: columnWidth = config?.columnWidth ?? 270;
+
+  // Access the folding state from settings
+  $: projectOptionsCollapsed = $settings.preferences.toolbar.projectOptionsCollapsed;
 
   function handleIncludedFieldsChange(fields: string[]) {
     onConfigChange({ ...config, includeFields: fields });
@@ -46,23 +50,25 @@
 -->
 <ViewLayout>
   <ViewHeader>
-    <ViewToolbar variant="secondary">
-      <BoardOptions
-        slot="right"
-        {fields}
-        statusField={config.groupByField}
-        checkField={config.checkField}
-        onStatusFieldChange={handleStatusFieldChange}
-        onCheckFieldChange={handleCheckFieldChange}
-        includedFields={config.includeFields ?? []}
-        onIncludedFieldsChange={handleIncludedFieldsChange}
-        onSettings={() => {
-          new BoardSettingsModal($app, config, fields, (value) => {
-            onConfigChange(value);
-          }).open();
-        }}
-      />
-    </ViewToolbar>
+    {#if !projectOptionsCollapsed}
+      <ViewToolbar variant="secondary">
+        <BoardOptions
+          slot="right"
+          {fields}
+          statusField={config.groupByField}
+          checkField={config.checkField}
+          onStatusFieldChange={handleStatusFieldChange}
+          onCheckFieldChange={handleCheckFieldChange}
+          includedFields={config.includeFields ?? []}
+          onIncludedFieldsChange={handleIncludedFieldsChange}
+          onSettings={() => {
+            new BoardSettingsModal($app, config, fields, (value) => {
+              onConfigChange(value);
+            }).open();
+          }}
+        />
+      </ViewToolbar>
+    {/if}
   </ViewHeader>
   <ViewContent>
     <slot

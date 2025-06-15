@@ -44,6 +44,9 @@
 
   let buttonEl: HTMLElement;
 
+  // Access the folding state from settings
+  $: projectOptionsCollapsed = $settings.preferences.toolbar.projectOptionsCollapsed;
+
   function saveConfig(cfg: TableConfig) {
     config = cfg;
     onConfigChange(cfg);
@@ -215,20 +218,22 @@
 
 <ViewLayout>
   <ViewHeader>
-    <ViewToolbar variant="secondary">
-      <svelte:fragment slot="right">
-        <SwitchSelect
-          label="Hide fields"
-          items={columns.map((column) => ({
-            label: column.field,
-            icon: fieldIcon(column),
-            value: column.field,
-            enabled: !column.hide,
-          }))}
-          onChange={handleVisibilityChange}
-        />
-      </svelte:fragment>
-    </ViewToolbar>
+    {#if !projectOptionsCollapsed}
+      <ViewToolbar variant="secondary">
+        <svelte:fragment slot="right">
+          <SwitchSelect
+            label="Hide fields"
+            items={columns.map((column) => ({
+              label: column.field,
+              icon: fieldIcon(column),
+              value: column.field,
+              enabled: !column.hide,
+            }))}
+            onChange={handleVisibilityChange}
+          />
+        </svelte:fragment>
+      </ViewToolbar>
+    {/if}
   </ViewHeader>
   <ViewContent>
     <div>

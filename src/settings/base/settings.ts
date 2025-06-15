@@ -202,6 +202,9 @@ export type ProjectsPluginPreferences = {
   readonly commands: ShowCommand[];
   readonly linkBehavior: LinkBehavior;
   readonly googleCalendar: GoogleCalendarSettings;
+  readonly toolbar: {
+    readonly projectOptionsCollapsed: boolean;
+  };
 };
 
 export type UnsavedViewDefinition = Omit<

@@ -51,6 +51,9 @@ export const DEFAULT_SETTINGS: ProjectsPluginSettings<
       calendarId: "",
       autoSyncInterval: 15,
     },
+    toolbar: {
+      projectOptionsCollapsed: true,
+    },
   },
 };
 

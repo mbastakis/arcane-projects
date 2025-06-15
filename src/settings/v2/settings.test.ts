@@ -20,6 +20,16 @@ describe("resolve v2", () => {
         projectSizeLimit: 1000,
         commands: [],
         linkBehavior: "open-editor",
+        googleCalendar: {
+          enabled: false,
+          clientId: "",
+          clientSecret: "",
+          redirectUri: "",
+          autoSyncInterval: 15,
+        },
+        toolbar: {
+          projectOptionsCollapsed: true,
+        },
       },
     });
   });
@@ -60,6 +70,16 @@ describe("resolve v2", () => {
         projectSizeLimit: 1000,
         commands: [],
         linkBehavior: "open-editor",
+        googleCalendar: {
+          enabled: false,
+          clientId: "",
+          clientSecret: "",
+          redirectUri: "",
+          autoSyncInterval: 15,
+        },
+        toolbar: {
+          projectOptionsCollapsed: true,
+        },
       },
     });
   });
@@ -156,6 +176,16 @@ describe("clean up commands", () => {
         },
         commands: [...validCommands, ...invalidCommands, ...duplicatedCommands],
         linkBehavior: "open-editor",
+        googleCalendar: {
+          enabled: false,
+          clientId: "",
+          clientSecret: "",
+          redirectUri: "",
+          autoSyncInterval: 15,
+        },
+        toolbar: {
+          projectOptionsCollapsed: true,
+        },
       },
     });
 
@@ -169,9 +199,18 @@ describe("clean up commands", () => {
         locale: {
           firstDayOfWeek: "default",
         },
-
         commands: validCommands,
         linkBehavior: "open-editor",
+        googleCalendar: {
+          enabled: false,
+          clientId: "",
+          clientSecret: "",
+          redirectUri: "",
+          autoSyncInterval: 15,
+        },
+        toolbar: {
+          projectOptionsCollapsed: true,
+        },
       },
     });
   });
